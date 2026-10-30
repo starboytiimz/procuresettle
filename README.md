@@ -39,8 +39,7 @@ stellar contract build --locked --package procuresettle
 
 ## License
 
-ProcureSettle is dual licensed under [MIT](LICENSE-MIT) or
-[Apache-2.0](LICENSE-APACHE).
+ProcureSettle is dual licensed under [Apache-2.0](LICENSE-APACHE).
 
 ## Limits
 
