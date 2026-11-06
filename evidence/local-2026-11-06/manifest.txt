@@ -1,0 +1,59 @@
+ProcureSettle pinned-image local flagship proof
+Recorded: 2026-11-06
+Verdict: PASS
+
+Producer source:
+  Git HEAD: abc1759f73d059870efb70bb2ffb9de9d62a8de9
+  Git tree: 7fccf2e8b1f3bef60a578115013729fa31d2879e
+  Contract source files matched HEAD.
+  Flagship harness: scripts/local-flagship-proof.py
+
+Artifact:
+  target/wasm32v1-none/release/procuresettle.wasm
+  Size: 25484 bytes
+  SHA-256: 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+
+Environment:
+  Quickstart image: stellar/quickstart@sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295
+  Running container image ID: sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295
+  Image version label: 24.04
+  Image revision: 91a64b5da2d7926bc82ae5a1f06048ef08cdcec2
+  Stellar Core: 29.0.1; commit 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c
+  Ledger: standalone local; protocol 28
+  Stellar CLI: 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)
+  Rust/Cargo: 1.95.0; soroban-sdk: 28.0.0
+  Python: 3.14.6
+
+Invocation:
+  python3 scripts/local-flagship-proof.py
+    --config-dir <local-config>
+    --wasm target/wasm32v1-none/release/procuresettle.wasm
+    --report-dir <report-dir>
+    --issuer-identity stage6-issuer
+    --buyer-identity stage6-buyer --buyer-address GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+    --supplier-identity stage6-supplier --supplier-address GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+    --sac-id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP
+  Harness SHA-256: a55ef9f579573277dd666fc129ebf13af0ec736ed3f6746cbc4ef520ffa62bdf
+
+Expected and observed:
+  Control: receipt payouts 56 and 44; Closed; funded/paid 100; refunded 0;
+  zero remaining control contract balance.
+  Changed quantities: payout 50.
+  Three repeat controls: each paid 56 then 44 and closed with paid 100/refunded 0.
+  Stale receipt after prior settlement: CLI process exit 1 with
+  QuantityExceedsRemaining (PoError #14); the PO, line quantities, receipt
+  status, and buyer/supplier/contract SAC balances compared equal before/after.
+  Flagship harness output: PROCURESETTLE_LOCAL_FLAGSHIP_PROOF_SUMMARY,
+  verdict PASS.
+  Buyer SAC balance: 644 before, 44 after. Supplier: 542 before, 1048 after.
+
+The log is a sanitized copy of the real CLI transcript. Machine paths were
+replaced with placeholders; command/output semantics, transaction hashes,
+contract and asset IDs, and measured states are retained. No identity secrets
+are present. The stale attempt is a simulation/preflight rejection and has no
+on-ledger transaction hash. This local proof is not Testnet/Mainnet evidence,
+external validation, or a security audit.
+
+Integrity:
+  SHA-256 of local-flagship-proof.txt:
+    3c045c7f6e2885a789e80ef1074f94409eca6a1d77559fded1f5fa86130fdc38

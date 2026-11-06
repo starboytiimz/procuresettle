@@ -105,6 +105,86 @@ records the first issuer request returning 502, then HTTP 200 on retry, with
 buyer and supplier returning HTTP 200. Persistent funding or Horizon failure
 still fails the job before the proof runs.
 
+The latest hosted run on source `abc1759f73d059870efb70bb2ffb9de9d62a8de9`,
+[run 41080992916](https://github.com/starboytiimz/procuresettle/actions/runs/41080992916),
+completed the `verify` job successfully, including formatting, workspace tests,
+and contract build. The `flagship` job started the local network and passed
+network/image checks, but account setup failed before either proof ran: the
+Friendbot returned HTTP 502, then 200, while Horizon account requests returned
+HTTP 503 throughout the workflow's five attempts. The flagship proof step was
+skipped and no proof artifact was produced. The workflow changes in this
+revision add a Horizon readiness check and a bounded 30-attempt funding wait;
+the revised workflow has not been run in hosted Actions.
+
+## Local joint cancellation and refund proof
+
+On 2026-11-06, the cancellation harness executed against a real standalone
+Quickstart ledger. The contract source revision was
+[`abc1759f73d059870efb70bb2ffb9de9d62a8de9`](https://github.com/starboytiimz/procuresettle/commit/abc1759f73d059870efb70bb2ffb9de9d62a8de9),
+tree `7fccf2e8b1f3bef60a578115013729fa31d2879e`. The contract source files
+match that commit. The initial proof harness was an uncommitted working-tree
+file with SHA-256
+`d1433df2a7555b979ecb175e0113ae29d0df9606312fedd8cb7ff051db9d627c`; the
+authorization-diagnostic rerun used SHA-256
+`fee53274585f4a5eb183e071b11f065743a075b68f205c95a82c6585d79de991`.
+The built `procuresettle.wasm` was 25,484 bytes with SHA-256
+`78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c`.
+
+The local ledger container used
+`stellar/quickstart@sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295`,
+image ID with the same digest, image version label `24.04`, and image revision
+`91a64b5da2d7926bc82ae5a1f06048ef08cdcec2`. The running Quickstart reported
+Stellar Core 29.0.1, commit `055dc9c7a9a9e038c6807a555c09bd94b85c9e2c`, and
+protocol 28. The network passphrase was `Standalone Network ; February 2017`.
+The harness used Stellar CLI 28.1.0 (commit
+`c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd`), stellar-sdk 13.1.0, and Python
+3.14. Historical hosted evidence that requested `stellar/quickstart:latest`
+remains unchanged; the CI workflow now pulls the immutable digest above, tags
+those local image bytes for the CLI, and checks the started container image ID.
+
+For two lines (10 x 6 and 8 x 5; total 100), the proof created and funded a PO,
+accepted receipt deltas 6 and 4, and settled 56. A buyer-only cancellation was
+submitted and fetched as `tx_failed`; its transaction metadata identifies
+failed account authentication for the configured supplier. PO state and buyer,
+supplier, and contract SAC balances compared equal before/after. The jointly
+authorized cancellation succeeded. Final state was `Cancelled`, funded 100,
+paid 56, refunded 44. In the diagnostic-verification rerun, buyer SAC balance
+was 88, supplier 1160, and contract 0. The rerun's failed transaction is
+`12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523`; joint
+cancellation is
+`67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558`. All
+submitted transactions were fetched and checked. Its transcript and detailed
+source/environment manifest are in
+[`evidence/cancellation-authorization-2026-11-06/`](../evidence/cancellation-authorization-2026-11-06/).
+The earlier same-day successful proof is preserved in
+[`evidence/cancellation/`](../evidence/cancellation/). The flagship settlement
+proof was also rerun on the same pinned image and source revision; its
+transcript and manifest are in
+[`evidence/local-2026-11-06/`](../evidence/local-2026-11-06/).
+
+Reproduce after the common setup in the `flagship` CI job, including installing
+the exact Python dependencies from
+[`requirements-proof.txt`](../requirements-proof.txt):
+
+```sh
+python3 scripts/local-cancellation-proof.py \
+  --config-dir "$STELLAR_CONFIG_DIR" \
+  --wasm target/wasm32v1-none/release/procuresettle.wasm \
+  --report-dir "$REPORT_DIR" \
+  --issuer-identity stage6-issuer \
+  --buyer-identity stage6-buyer --buyer-address "$STAGE6_BUYER" \
+  --supplier-identity stage6-supplier --supplier-address "$STAGE6_SUPPLIER" \
+  --sac-id "$STAGE6_SAC"
+```
+
+The expected output contains `"verdict": "PASS"`; any failed transaction,
+missing auth requirement, wrong transfer, unexpected balance/state, or missing
+fetched transaction result exits nonzero. The unauthorized cancellation is an
+on-ledger failed transaction and can consume native XLM fees; the equality
+assertion covers PO state and the three settlement-token balances. This proof
+does not test Testnet/Mainnet cancellation, custom token behavior, inactive
+storage restoration, or the absence of fee costs.
+
 ## Reproduce
 
 Prerequisites: Rust/Cargo 1.95.0 with `wasm32v1-none`, Stellar CLI 28.1.0,
@@ -133,6 +213,39 @@ CLI config directory, and real Testnet transaction fees in XLM. Review its
 asset, deploys contracts, and submits transactions on public Testnet. The
 captured Testnet run is evidence, not a recurring CI gate.
 
+The standalone network proof expects a fresh protocol-28 ledger and an artifact
+of 25,484 bytes with SHA-256
+`78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c`. Its
+expected summary is a first payout of 56, final payout of 44, a changed-quantity
+payout of 50, a closed control PO funded/paid at 100 with zero refunded, and a
+stale receipt rejection with unchanged PO, line, receipt, and balance snapshots.
+The harness returns nonzero if an expected CLI response is missing or differs.
+The report directory contains its raw CLI transcript and machine-readable
+summary. The CI workflow is the reproducible reference for network startup,
+identity funding, asset/SAC creation, and proof invocation.
+
+The Testnet harness uses three named identities in a private Stellar CLI
+config. Its CLI invocation is:
+
+```sh
+python3 scripts/testnet-flagship-proof.py \
+  --config-dir "$STELLAR_CONFIG_DIR" \
+  --wasm target/wasm32v1-none/release/procuresettle.wasm \
+  --report-dir "$REPORT_DIR" \
+  --issuer-identity "$ISSUER_IDENTITY" \
+  --buyer-identity "$BUYER_IDENTITY" \
+  --supplier-identity "$SUPPLIER_IDENTITY"
+```
+
+The identities must already be funded on Testnet; the harness performs public
+setup and settlement transactions and writes fetched result, metadata, and
+event records to its report directory. The expected economic result is the
+same 56/44 control and 50 changed payout, with the stale receipt rejected
+before submission. A new run has new transaction, contract, and PO IDs. Do not
+reuse a prior run's transaction as proof of a new execution. Before running,
+review the script's `--help`, artifact hash assertion, current protocol gate,
+and the resettable-network limitation.
+
 ## Scope and limitations
 
 - An earlier exact-match Stage 7 search found no legitimate external target,
@@ -144,8 +257,8 @@ captured Testnet run is evidence, not a recurring CI gate.
   supplier and accepted by the buyer.
 - A public ProcureSettle Stellar Testnet flagship proof is recorded below. No
   Mainnet deployment or proof is claimed.
-- Cancellation is covered by host tests but has not been demonstrated through
-  the CLI local-ledger proof.
+- Cancellation is demonstrated in the local-ledger proof above; no public
+  network cancellation proof is claimed.
 - Broad compatibility with arbitrary custom SEP-41 tokens is not claimed; the
   real execution used a classic asset wrapped as a SAC.
 - v0.1 uses integer quantities, has no dispute arbitration, and does not
@@ -296,6 +409,44 @@ ProcureSettle used the exact integer quantities and base-unit prices in Movix's
 x 72,500,000 = 217,500,000; the independently recomputed total is 467,500,000.
 The fixture, source blob identities, mapping, and explicit non-mappings are in
 [`evidence/movix/`](../evidence/movix/).
+
+### What this validation means
+
+There are four distinct claims to keep separate:
+
+- **Integration:** none. ProcureSettle is not called by Movix, and no shared
+  code or deployment exists.
+- **Read-only compatibility check:** the source checker verifies a pinned
+  Movix commit, selected source blobs, fixture values, and workflow boundaries.
+  The separate Testnet proof exercised ProcureSettle using values mapped from
+  that fixture. Neither changes Movix state or invokes Movix code.
+- **Source-level compatibility:** limited to the mapped integer line numbers,
+  quantities, and base-unit prices described below. It does not establish
+  compatibility with Movix's policies, UI, contracts, identity model, or live
+  asset.
+- **External validation or endorsement:** none is recorded. No maintainer
+  review, approval, adoption, or endorsement is claimed.
+
+### External validation plan
+
+A concise copy-ready request, bounded scope, and record-retention requirements
+are in [`docs/EXTERNAL-VALIDATION.md`](EXTERNAL-VALIDATION.md). A Movix
+maintainer or another Stellar/Soroban developer could review the fixture
+mapping and independently reproduce the settlement proof against a test-only
+asset. If a maintainer agrees to cross-project testing, use only an explicitly
+approved fixture or test environment. Do not use Movix production systems or
+assets.
+
+Count external validation as successful only when a named independent reviewer
+or maintainer, their project/role, the reviewed ProcureSettle commit, the exact
+fixture/harness revision, and their observed results are recorded in a new
+evidence entry. For execution validation, preserve the command or CI run,
+network/ledger identity, artifact digest, successful transaction results or
+local state assertions, and failures. A source review alone should be labeled
+review; it does not establish integration. A maintainer response or permission
+should be represented accurately and must not be called endorsement unless
+they explicitly endorse the project. No contact or approval has been made as
+part of this repository change.
 
 Movix's [agricultural trade pivot](https://github.com/chrissstellee/Movix/blob/05f2ba1dbe72a8f46e546b4509281e54933708e4/docs/Movix-ASEAN-Agricultural-Trade-Pivot.md)
 and [fulfillment scope](https://github.com/chrissstellee/Movix/blob/05f2ba1dbe72a8f46e546b4509281e54933708e4/docs/Movix-Sprint-08-Fulfillment-Release-Detailed.md)

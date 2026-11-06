@@ -39,6 +39,11 @@ jobs:
       - name: Test workspace
         run: cargo +1.95.0 test --workspace --locked
 
+      - name: Validate proof scripts and evidence bundles
+        run: |
+          python3 -m py_compile scripts/*.py
+          python3 scripts/verify-evidence-checksums.py
+
       - name: Install pinned Stellar CLI
         uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd
         with:
@@ -75,6 +80,8 @@ jobs:
           echo "STELLAR_CONFIG_DIR=$RUNNER_TEMP/procuresettle-config" >> "$GITHUB_ENV"
           echo "REPORT_DIR=$RUNNER_TEMP/procuresettle-reports" >> "$GITHUB_ENV"
           echo "QUICKSTART_CONTAINER=stellar-procuresettle-local-proof" >> "$GITHUB_ENV"
+          echo "QUICKSTART_IMAGE_DIGEST=sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295" >> "$GITHUB_ENV"
+          echo "QUICKSTART_IMAGE_TAG=procuresettle-proof-4f8dfd693deb" >> "$GITHUB_ENV"
 
       - name: Install pinned Rust and WASM target
         run: |
@@ -102,11 +109,30 @@ jobs:
           test "$(stat -c '%s' target/wasm32v1-none/release/procuresettle.wasm)" = "25484"
           test "$(sha256sum target/wasm32v1-none/release/procuresettle.wasm | awk '{print $1}')" = "78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c"
 
+      - name: Install pinned proof SDK dependencies
+        run: python3 -m pip install --disable-pip-version-check -r requirements-proof.txt
+
+      - name: Verify proof SDK version
+        run: |
+          python3 -c 'import stellar_sdk; print("stellar-sdk", stellar_sdk.__version__); assert stellar_sdk.__version__ == "13.1.0"'
+
+      - name: Pull and tag pinned Quickstart image
+        run: |
+          set -euo pipefail
+          image="stellar/quickstart@$QUICKSTART_IMAGE_DIGEST"
+          tag="stellar/quickstart:$QUICKSTART_IMAGE_TAG"
+          docker pull "$image"
+          docker tag "$image" "$tag"
+          digest_image_id=$(docker image inspect "$image" --format '{{.Id}}')
+          tagged_image_id=$(docker image inspect "$tag" --format '{{.Id}}')
+          test "$digest_image_id" = "$tagged_image_id"
+          echo "Pinned Quickstart image: $image (image_id=$digest_image_id)"
+
       - name: Start fresh local Stellar network
         run: |
           stellar --config-dir "$STELLAR_CONFIG_DIR" container start local \
             --name procuresettle-local-proof --cpus 2 --memory 4g \
-            --protocol-version 28 --image-tag-override latest
+            --protocol-version 28 --image-tag-override "$QUICKSTART_IMAGE_TAG"
           stellar --config-dir "$STELLAR_CONFIG_DIR" network use local
 
       - name: Wait for local network readiness and record image identity
@@ -119,6 +145,8 @@ jobs:
                 --output "$RUNNER_TEMP/quickstart-health.json" 2>/dev/null \
               && jq -e '.database_connected == true and .core_up == true and .core_synced == true' \
                 "$RUNNER_TEMP/quickstart-health.json" >/dev/null \
+              && curl --silent --show-error --fail http://localhost:8000/ \
+                --output "$RUNNER_TEMP/quickstart-horizon-root.json" \
               && stellar --config-dir "$STELLAR_CONFIG_DIR" network info --network local \
                 >"$RUNNER_TEMP/stellar-network-info.txt" 2>&1 \
               && grep -Fq 'Protocol Version: 28' "$RUNNER_TEMP/stellar-network-info.txt" \
@@ -136,6 +164,8 @@ jobs:
           cat "$RUNNER_TEMP/stellar-network-info.txt"
           cat "$RUNNER_TEMP/quickstart-health.json"
           image_id=$(docker inspect "$QUICKSTART_CONTAINER" --format '{{.Image}}')
+          expected_image_id=$(docker image inspect "stellar/quickstart:$QUICKSTART_IMAGE_TAG" --format '{{.Id}}')
+          test "$image_id" = "$expected_image_id"
           docker inspect "$QUICKSTART_CONTAINER" --format 'container_image={{.Config.Image}} image_id={{.Image}}'
           docker image inspect "$image_id" --format 'quickstart_version={{index .Config.Labels "org.opencontainers.image.version"}} quickstart_revision={{index .Config.Labels "org.opencontainers.image.revision"}} repo_digests={{json .RepoDigests}}'
 
@@ -154,14 +184,20 @@ jobs:
             # the local endpoint, but accept funding only after Horizon confirms
             # the generated account exists.
             account_ready=false
-            for attempt in $(seq 1 5); do
-              if friendbot_status=$(curl --silent --show-error \
-                  --output "$RUNNER_TEMP/friendbot-${identity}.json" \
-                  --write-out '%{http_code}' \
-                  "http://localhost:8000/friendbot?addr=$address"); then
-                echo "Friendbot HTTP $friendbot_status for $identity (attempt $attempt)"
-              else
-                echo "Friendbot request failed for $identity (attempt $attempt)" >&2
+            funding_submitted=false
+            for attempt in $(seq 1 30); do
+              if [ "$funding_submitted" != true ]; then
+                if friendbot_status=$(curl --silent --show-error \
+                    --output "$RUNNER_TEMP/friendbot-${identity}.json" \
+                    --write-out '%{http_code}' \
+                    "http://localhost:8000/friendbot?addr=$address"); then
+                  echo "Friendbot HTTP $friendbot_status for $identity (attempt $attempt)"
+                  case "$friendbot_status" in
+                    200|400) funding_submitted=true ;;
+                  esac
+                else
+                  echo "Friendbot request failed for $identity (attempt $attempt)" >&2
+                fi
               fi
               if curl --silent --show-error --fail \
                   "http://localhost:8000/accounts/$address" \
@@ -171,10 +207,12 @@ jobs:
                 account_ready=true
                 break
               fi
-              if [ "$attempt" -lt 5 ]; then sleep 2; fi
+              if [ "$attempt" -lt 30 ]; then sleep 2; fi
             done
             if [ "$account_ready" != true ]; then
-              echo "Quickstart did not expose funded account $identity through Horizon" >&2
+              cat "$RUNNER_TEMP/friendbot-${identity}.json" 2>/dev/null || true
+              cat "$RUNNER_TEMP/account-${identity}.json" 2>/dev/null || true
+              echo "Quickstart did not expose funded account $identity through Horizon after 30 attempts" >&2
               exit 1
             fi
           done
@@ -203,6 +241,17 @@ jobs:
       - name: Run real local flagship proof
         run: |
           python3 scripts/local-flagship-proof.py \
+            --config-dir "$STELLAR_CONFIG_DIR" \
+            --wasm target/wasm32v1-none/release/procuresettle.wasm \
+            --report-dir "$REPORT_DIR" \
+            --issuer-identity stage6-issuer \
+            --buyer-identity stage6-buyer --buyer-address "$STAGE6_BUYER" \
+            --supplier-identity stage6-supplier --supplier-address "$STAGE6_SUPPLIER" \
+            --sac-id "$STAGE6_SAC"
+
+      - name: Run local cancellation and refund proof
+        run: |
+          python3 scripts/local-cancellation-proof.py \
             --config-dir "$STELLAR_CONFIG_DIR" \
             --wasm target/wasm32v1-none/release/procuresettle.wasm \
             --report-dir "$REPORT_DIR" \

@@ -1,0 +1,3261 @@
+
+$ stellar --config-dir <local-config> --version
+EXIT=0
+STDOUT:
+stellar 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)
+stellar-xdr 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)
+xdr (9c9c145953e80990d6ff1ae3a6a973a0ce6d0694)
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> network info
+EXIT=0
+STDOUT:
+
+STDERR:
+ℹ️  Network Id: baefd734b8d3e48472cff83912375fedbc7573701912fe308af730180f97d74a
+ℹ️  Version: 29.0.1
+ℹ️  Commit Hash: 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c
+ℹ️  Build Timestamp: 2026-10-12T20:45:52
+ℹ️  Captive Core Version: v29.0.0
+ℹ️  Protocol Version: 28
+ℹ️  Passphrase: Standalone Network ; February 2017
+ℹ️  Friendbot Url: http://localhost:8000/friendbot
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+644
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+542
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract deploy --wasm <repository-root>/target/wasm32v1-none/release/procuresettle.wasm --source-account stage6-issuer --network local
+EXIT=0
+STDOUT:
+CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD
+
+STDERR:
+ℹ️  Uploading contract WASM…
+ℹ️  Skipping install because wasm already installed
+ℹ️  Deploying contract using wasm hash 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: bddfe86da4cb75e56926f72e2eae4c92cac76b96e3f12e87d6edb1096092e002
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+✅ Deployed!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- create_po --po_id 17939279253570 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: a25378ae9d3c5cb5093a6f41d31a636c5bf3cae2e3a19c29fbf82eec486c3f4c
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253570,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+644
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- accept_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: d25a09b41559711815437e332c363d71190a8fc3787e06b3d258b74fed9db8e5
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- fund_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 21fcad6cf44de78bd2cc860db34b482cd3aee41bf34b8b50e705d9b4b46750bc
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+544
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+100
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253570,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+542
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- submit_receipt --po_id 17939279253570 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 2a096a811e7acc833cc5da122f0fca8078c5d671d8999e3491ba2c2c70111d4c
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253570 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253570,"receipt_id":1,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253570 --receipt_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":6}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253570 --receipt_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253570,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 17939279253570 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: d0e359975707b08e533c448f68aa059d3efa9b715617f46a13799b390d86af9e
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":17939279253570,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253570 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253570,"receipt_id":1,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+544
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+598
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+598
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- submit_receipt --po_id 17939279253570 --receipt_id 2 --quantities '[{"line_id":1,"quantity_delta":4},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 4efee27557e59f25c637773805ebff551ff22a20c65c16000908a849fcdf0058
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253570 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253570,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253570 --receipt_id 2 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253570 --receipt_id 2 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+598
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 17939279253570 --receipt_id 2
+EXIT=0
+STDOUT:
+"44"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 55f86c398e4d0b65565e88ca51461881cf4f9e486381b0adeb244c3a6eb98d07
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"44"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253570
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"100","po_id":17939279253570,"refunded_value":"0","status":"Closed","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":10,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253570 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":8,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253570 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253570,"receipt_id":2,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+544
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+642
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+642
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+642
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+642
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- create_po --po_id 17939279253571 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 5ca8e5ea286f7cc5b66225778736732871d62a1b11693c4231652e4b9cf27771
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253571
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253571,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+544
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- accept_po --po_id 17939279253571
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 40d6950a9b5b67d0a8d9797ff836f82acb6f1d70d2577c68faba94c3c4e049fe
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- fund_po --po_id 17939279253571
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 515092f3839f4e7bdd92a7752bff821a0dc4f6fc5f3f793d9ddf682753e6f10b
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+444
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+100
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253571
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253571,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+642
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- submit_receipt --po_id 17939279253571 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":5},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 5e656d8bc2fffeffe69d1fbeb264818c4fc5be96532194b7ea85ba4d4917f660
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253571 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253571,"receipt_id":1,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253571 --receipt_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":5}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253571 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253571 --receipt_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253571 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 17939279253571 --receipt_id 1
+EXIT=0
+STDOUT:
+"50"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 09836a0883f7c0294c74d5e2b6f05d086d0d8841510095baaa7b7f52c0c86d7b
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"50"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253571
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"50","po_id":17939279253571,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253571 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":5,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253571 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+444
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+692
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+50
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+692
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+50
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+50
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- create_po --po_id 17939279253572 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 46b4d57c3856cd948c7137a64fd462d9e1f819644bc7113296f5842993b21945
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253572,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+444
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+50
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- accept_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 2f5efd0dc64632abd41939dd1c89701af7808a7a165ea5e51fa774ac87193154
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- fund_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: a7ad05e01ac3c60714c574e6b928abf1705be3e345e5d32b09a33269a3fc0bd2
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+344
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+150
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":17939279253572,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- submit_receipt --po_id 17939279253572 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: b75d3c48ad8daab4a935911db65de64a9e6555ce4132d4d6f4f551871b1154c5
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-supplier --network local -- submit_receipt --po_id 17939279253572 --receipt_id 2 --quantities '[{"line_id":1,"quantity_delta":5},{"line_id":2,"quantity_delta":1}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: c784bf721728b30acb65b53b2ab63edcd61c92e4fda12d8c2416bc86c235519a
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253572 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253572,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253572 --receipt_id 2 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":5}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt_line --po_id 17939279253572 --receipt_id 2 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":1}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 17939279253572 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 635e094ead7b724f7043bdefb947b6a7eea23624a6e198d2b81592fc58480720
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":17939279253572,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253572 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253572,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+344
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+748
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+94
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 17939279253572 --receipt_id 2
+EXIT=1
+STDOUT:
+
+STDERR:
+❌ error: transaction simulation failed: HostError: Error(Contract, #14)
+
+Event log (newest first):
+   0: [Diagnostic Event] contract:CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD, topics:[error, Error(Contract, #14)], data:"escalating Ok(ScErrorType::Contract) frame-exit to Err"
+   1: [Diagnostic Event] topics:[fn_call, CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD, accept_receipt_and_settle], data:[17939279253572, 2]
+
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_po --po_id 17939279253572
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":17939279253572,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_line --po_id 17939279253572 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --source-account stage6-buyer --network local -- get_receipt --po_id 17939279253572 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":17939279253572,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+344
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+748
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD --network local
+EXIT=0
+STDOUT:
+94
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract deploy --wasm <repository-root>/target/wasm32v1-none/release/procuresettle.wasm --source-account stage6-issuer --network local
+EXIT=0
+STDOUT:
+CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV
+
+STDERR:
+ℹ️  Uploading contract WASM…
+ℹ️  Skipping install because wasm already installed
+ℹ️  Deploying contract using wasm hash 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: fbaab37412796604bb36d5a44d7d9e05b0bb9bd9c6cf815aacf2bc144bdad598
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+✅ Deployed!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- create_po --po_id 1 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 76f87b406c0d183258723d4ca8fdbbe7b6db69bbd05119977f3e4d37d3d9a54b
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+344
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-supplier --network local -- accept_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 0e2610ec08992c05881e408e8c4297007ea655fe9d59701535ed794d767f556e
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- fund_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 0d4c1c0c35e6de6b2b3d650bc9cac0f01d63e95818081db0879b011c231b28c0
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+244
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+100
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+748
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 595d840b7c6f30aa7ab4988a1da58522fc2ade79ce164cc48253ad80323c5b89
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":6}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: c8880b18be3e5fc7a70d35e6461e01c3cea8e2da2504e87e5306143a111d28d0
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+244
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+804
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+804
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 2 --quantities '[{"line_id":1,"quantity_delta":4},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 0576e48fc22c6a6e179ad4bfa5c432ecfd967c57a31aa4ab2f0cbb23a0bb47bc
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+804
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+"44"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 8c01d7a3b1b8b9e3fbda364931ca3dc6e9978071759807664a814ca8b9894003
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"44"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"100","po_id":1,"refunded_value":"0","status":"Closed","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":10,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":8,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+244
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+848
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+848
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+848
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+848
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract deploy --wasm <repository-root>/target/wasm32v1-none/release/procuresettle.wasm --source-account stage6-issuer --network local
+EXIT=0
+STDOUT:
+CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2
+
+STDERR:
+ℹ️  Uploading contract WASM…
+ℹ️  Skipping install because wasm already installed
+ℹ️  Deploying contract using wasm hash 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 5ca56072c16d2afd5121233aa193e7e800d55752bad0c99ccb1d69b0b4ab2cf1
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+✅ Deployed!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- create_po --po_id 1 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 794a6e524763671a1e59688a256486367d38b43cf91ad55c96d4fd1febfb2e7c
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+244
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-supplier --network local -- accept_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 359e76cedf92ac833d9a3630abd7c42f45007d79b1aad45d1f438c7053f4b1b3
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- fund_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: de20790598767d3b8b6de39a22641f68d177671245c94c03b5c9e2882ed93f4f
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+144
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+100
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+848
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 7b37f3e11109bc2411e4d167153dc3f878d82462a01dbc57060c88e1e9a40e97
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":6}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 406f8fa9457b147a7abdfaac4eebec73dd45ec92052f0645fda84d9be79832e4
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+144
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+904
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+904
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 2 --quantities '[{"line_id":1,"quantity_delta":4},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 159daea5b98e0dcf3e362903907a218189024359d4b15f591dbd99badc648469
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+904
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+"44"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: a48c60f7df10758522eee5f705ea309010093d72a31d09892f88636590f040d0
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"44"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"100","po_id":1,"refunded_value":"0","status":"Closed","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":10,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":8,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+144
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+948
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+948
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+948
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+948
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2 --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract deploy --wasm <repository-root>/target/wasm32v1-none/release/procuresettle.wasm --source-account stage6-issuer --network local
+EXIT=0
+STDOUT:
+CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ
+
+STDERR:
+ℹ️  Uploading contract WASM…
+ℹ️  Skipping install because wasm already installed
+ℹ️  Deploying contract using wasm hash 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 821c9bce21b2d1352ae816c58bbe056b695dd3691f90dffd410b8644ba3d4564
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+✅ Deployed!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- create_po --po_id 1 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: bac2c93a99afa457647404310fed0df439fd4a6c382b77e9f48799041dd8e345
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+144
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-supplier --network local -- accept_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: c686c245da7cc1fadbca1d1dec3ee440c54dea810422cffbd5e00a2cd9a286bb
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- fund_po --po_id 1
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 20af714512dc88e830a3e922f4a9230a8619903da2363de6d0ec05a20b257833
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+100
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+948
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: e3ca588cb19cc0c97204dc99d45936c2a8380321317e41989682cce2d768ba41
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":6}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":0,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: ef8f387daf2879ce452a791e1a4a8334ff439ddccd651fb9f31bd49fe6182b0f
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 1
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":1,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1004
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1004
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-supplier --network local -- submit_receipt --po_id 1 --receipt_id 2 --quantities '[{"line_id":1,"quantity_delta":4},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: aa7df738bbb8896f6cfedac4a56d4832e4e049c68659efcf6b5ddd997f36c329
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Submitted"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 1
+EXIT=0
+STDOUT:
+{"line_id":1,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt_line --po_id 1 --receipt_id 2 --line_id 2
+EXIT=0
+STDOUT:
+{"line_id":2,"quantity_delta":4}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1004
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+"44"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: fae2afa21c4176e772fb7ada6ede24c7775960893702c20f5562402b6a1d70dc
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"44"}
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_po --po_id 1
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"100","po_id":1,"refunded_value":"0","status":"Closed","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":10,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_line --po_id 1 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":8,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> contract invoke --contract-id CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --source-account stage6-buyer --network local -- get_receipt --po_id 1 --receipt_id 2
+EXIT=0
+STDOUT:
+{"line_count":2,"line_ids":[1,2],"po_id":1,"receipt_id":2,"status":"Settled"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1048
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1048
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1048
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1048
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir <local-config> token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1048
+
+STDERR:
+
+
+SEMANTIC_SUMMARY_JSON:
+{
+  "asset_after": {
+    "buyer": 44,
+    "supplier": 1048
+  },
+  "asset_before": {
+    "buyer": 644,
+    "identity": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+    "supplier": 542
+  },
+  "control": {
+    "contract_id": "CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD",
+    "final_po": {
+      "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+      "funded_value": "100",
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "paid_value": "100",
+      "po_id": 17939279253570,
+      "refunded_value": "0",
+      "status": "Closed",
+      "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+      "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+      "total_value": "100"
+    },
+    "final_receipt": {
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "po_id": 17939279253570,
+      "receipt_id": 2,
+      "status": "Settled"
+    },
+    "po_id": 17939279253570,
+    "r1_expected_and_paid": 56,
+    "r1_lines": [
+      {
+        "accepted_quantity": 6,
+        "line_id": 1,
+        "ordered_quantity": 10,
+        "unit_price": "6"
+      },
+      {
+        "accepted_quantity": 4,
+        "line_id": 2,
+        "ordered_quantity": 8,
+        "unit_price": "5"
+      }
+    ],
+    "r1_po": {
+      "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+      "funded_value": "100",
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "paid_value": "56",
+      "po_id": 17939279253570,
+      "refunded_value": "0",
+      "status": "Funded",
+      "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+      "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+      "total_value": "100"
+    },
+    "r1_raw": {
+      "raw_lines": [
+        {
+          "po_line": {
+            "accepted_quantity": 0,
+            "line_id": 1,
+            "ordered_quantity": 10,
+            "unit_price": "6"
+          },
+          "receipt_line": {
+            "line_id": 1,
+            "quantity_delta": 6
+          }
+        },
+        {
+          "po_line": {
+            "accepted_quantity": 0,
+            "line_id": 2,
+            "ordered_quantity": 8,
+            "unit_price": "5"
+          },
+          "receipt_line": {
+            "line_id": 2,
+            "quantity_delta": 4
+          }
+        }
+      ],
+      "receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 17939279253570,
+        "receipt_id": 1,
+        "status": "Submitted"
+      }
+    },
+    "r2_expected_and_paid": 44,
+    "r2_raw": {
+      "raw_lines": [
+        {
+          "po_line": {
+            "accepted_quantity": 6,
+            "line_id": 1,
+            "ordered_quantity": 10,
+            "unit_price": "6"
+          },
+          "receipt_line": {
+            "line_id": 1,
+            "quantity_delta": 4
+          }
+        },
+        {
+          "po_line": {
+            "accepted_quantity": 4,
+            "line_id": 2,
+            "ordered_quantity": 8,
+            "unit_price": "5"
+          },
+          "receipt_line": {
+            "line_id": 2,
+            "quantity_delta": 4
+          }
+        }
+      ],
+      "receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 17939279253570,
+        "receipt_id": 2,
+        "status": "Submitted"
+      }
+    },
+    "token_deltas": {
+      "buyer_during_settlement": 0,
+      "contract_after_close": 0,
+      "contract_net_change_from_pre_funding": 0,
+      "r1_contract_delta": -56,
+      "r1_supplier_gain": 56,
+      "r2_contract_delta": -44,
+      "r2_supplier_gain": 44,
+      "supplier_for_full_po": 100
+    }
+  },
+  "deliberate_change": {
+    "contract_id": "CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD",
+    "expected_and_paid": 50,
+    "po": {
+      "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+      "funded_value": "100",
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "paid_value": "50",
+      "po_id": 17939279253571,
+      "refunded_value": "0",
+      "status": "Funded",
+      "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+      "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+      "total_value": "100"
+    },
+    "po_id": 17939279253571,
+    "raw": {
+      "raw_lines": [
+        {
+          "po_line": {
+            "accepted_quantity": 0,
+            "line_id": 1,
+            "ordered_quantity": 10,
+            "unit_price": "6"
+          },
+          "receipt_line": {
+            "line_id": 1,
+            "quantity_delta": 5
+          }
+        },
+        {
+          "po_line": {
+            "accepted_quantity": 0,
+            "line_id": 2,
+            "ordered_quantity": 8,
+            "unit_price": "5"
+          },
+          "receipt_line": {
+            "line_id": 2,
+            "quantity_delta": 4
+          }
+        }
+      ],
+      "receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 17939279253571,
+        "receipt_id": 1,
+        "status": "Submitted"
+      }
+    },
+    "token_deltas": {
+      "buyer_during_settlement": 0,
+      "contract_balance_after": 50,
+      "contract_for_receipt": -50,
+      "supplier_for_receipt": 50
+    }
+  },
+  "local_network": "\u2139\ufe0f  Network Id: baefd734b8d3e48472cff83912375fedbc7573701912fe308af730180f97d74a\n\u2139\ufe0f  Version: 29.0.1\n\u2139\ufe0f  Commit Hash: 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c\n\u2139\ufe0f  Build Timestamp: 2026-10-12T20:45:52\n\u2139\ufe0f  Captive Core Version: v29.0.0\n\u2139\ufe0f  Protocol Version: 28\n\u2139\ufe0f  Passphrase: Standalone Network ; February 2017\n\u2139\ufe0f  Friendbot Url: http://localhost:8000/friendbot",
+  "primary_contract": "CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD",
+  "repeat_runs": [
+    {
+      "contract_id": "CBVESGSPDVTP34TO2DONJUY7TGA7ALHVQRSKIMM3G6N2GIMAW5HBWUXV",
+      "execution": 1,
+      "final_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "100",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Closed",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "final_receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 1,
+        "receipt_id": 2,
+        "status": "Settled"
+      },
+      "po_id": 1,
+      "r1_expected_and_paid": 56,
+      "r1_lines": [
+        {
+          "accepted_quantity": 6,
+          "line_id": 1,
+          "ordered_quantity": 10,
+          "unit_price": "6"
+        },
+        {
+          "accepted_quantity": 4,
+          "line_id": 2,
+          "ordered_quantity": 8,
+          "unit_price": "5"
+        }
+      ],
+      "r1_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "56",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Funded",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "r1_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 6
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 1,
+          "status": "Submitted"
+        }
+      },
+      "r2_expected_and_paid": 44,
+      "r2_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 6,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 4
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 4,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 2,
+          "status": "Submitted"
+        }
+      },
+      "token_deltas": {
+        "buyer_during_settlement": 0,
+        "contract_after_close": 0,
+        "contract_net_change_from_pre_funding": 0,
+        "r1_contract_delta": -56,
+        "r1_supplier_gain": 56,
+        "r2_contract_delta": -44,
+        "r2_supplier_gain": 44,
+        "supplier_for_full_po": 100
+      }
+    },
+    {
+      "contract_id": "CBZUVWEAAVEBN6OHDDL5N4YGZQLBPZQVYZSGK77ITIRU3BKD6BXOJUK2",
+      "execution": 2,
+      "final_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "100",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Closed",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "final_receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 1,
+        "receipt_id": 2,
+        "status": "Settled"
+      },
+      "po_id": 1,
+      "r1_expected_and_paid": 56,
+      "r1_lines": [
+        {
+          "accepted_quantity": 6,
+          "line_id": 1,
+          "ordered_quantity": 10,
+          "unit_price": "6"
+        },
+        {
+          "accepted_quantity": 4,
+          "line_id": 2,
+          "ordered_quantity": 8,
+          "unit_price": "5"
+        }
+      ],
+      "r1_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "56",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Funded",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "r1_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 6
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 1,
+          "status": "Submitted"
+        }
+      },
+      "r2_expected_and_paid": 44,
+      "r2_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 6,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 4
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 4,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 2,
+          "status": "Submitted"
+        }
+      },
+      "token_deltas": {
+        "buyer_during_settlement": 0,
+        "contract_after_close": 0,
+        "contract_net_change_from_pre_funding": 0,
+        "r1_contract_delta": -56,
+        "r1_supplier_gain": 56,
+        "r2_contract_delta": -44,
+        "r2_supplier_gain": 44,
+        "supplier_for_full_po": 100
+      }
+    },
+    {
+      "contract_id": "CAZXPMPSWXYS4S5ZFHPEVB2S7W37HE3G5I6WYWNIL4FLF45DV5RW23KQ",
+      "execution": 3,
+      "final_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "100",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Closed",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "final_receipt": {
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "po_id": 1,
+        "receipt_id": 2,
+        "status": "Settled"
+      },
+      "po_id": 1,
+      "r1_expected_and_paid": 56,
+      "r1_lines": [
+        {
+          "accepted_quantity": 6,
+          "line_id": 1,
+          "ordered_quantity": 10,
+          "unit_price": "6"
+        },
+        {
+          "accepted_quantity": 4,
+          "line_id": 2,
+          "ordered_quantity": 8,
+          "unit_price": "5"
+        }
+      ],
+      "r1_po": {
+        "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+        "funded_value": "100",
+        "line_count": 2,
+        "line_ids": [
+          1,
+          2
+        ],
+        "paid_value": "56",
+        "po_id": 1,
+        "refunded_value": "0",
+        "status": "Funded",
+        "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+        "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+        "total_value": "100"
+      },
+      "r1_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 6
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 0,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 1,
+          "status": "Submitted"
+        }
+      },
+      "r2_expected_and_paid": 44,
+      "r2_raw": {
+        "raw_lines": [
+          {
+            "po_line": {
+              "accepted_quantity": 6,
+              "line_id": 1,
+              "ordered_quantity": 10,
+              "unit_price": "6"
+            },
+            "receipt_line": {
+              "line_id": 1,
+              "quantity_delta": 4
+            }
+          },
+          {
+            "po_line": {
+              "accepted_quantity": 4,
+              "line_id": 2,
+              "ordered_quantity": 8,
+              "unit_price": "5"
+            },
+            "receipt_line": {
+              "line_id": 2,
+              "quantity_delta": 4
+            }
+          }
+        ],
+        "receipt": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 1,
+          "receipt_id": 2,
+          "status": "Submitted"
+        }
+      },
+      "token_deltas": {
+        "buyer_during_settlement": 0,
+        "contract_after_close": 0,
+        "contract_net_change_from_pre_funding": 0,
+        "r1_contract_delta": -56,
+        "r1_supplier_gain": 56,
+        "r2_contract_delta": -44,
+        "r2_supplier_gain": 44,
+        "supplier_for_full_po": 100
+      }
+    }
+  ],
+  "source_sha": "abc1759f73d059870efb70bb2ffb9de9d62a8de9",
+  "stale": {
+    "cli_exit": 1,
+    "contract_id": "CD5IBGCWSPLDVFWTORUTJNDKHLA6PGM2JMXXU6OJOACTJW7KPSU6KFHD",
+    "expected_contract_error": "QuantityExceedsRemaining (PoError #14)",
+    "po_id": 17939279253572,
+    "pre_post": {
+      "balances": {
+        "after": {
+          "buyer": 344,
+          "contract": 94,
+          "supplier": 748
+        },
+        "before": {
+          "buyer": 344,
+          "contract": 94,
+          "supplier": 748
+        }
+      },
+      "equal": true,
+      "line_a": {
+        "after": {
+          "accepted_quantity": 6,
+          "line_id": 1,
+          "ordered_quantity": 10,
+          "unit_price": "6"
+        },
+        "before": {
+          "accepted_quantity": 6,
+          "line_id": 1,
+          "ordered_quantity": 10,
+          "unit_price": "6"
+        }
+      },
+      "line_b": {
+        "after": {
+          "accepted_quantity": 4,
+          "line_id": 2,
+          "ordered_quantity": 8,
+          "unit_price": "5"
+        },
+        "before": {
+          "accepted_quantity": 4,
+          "line_id": 2,
+          "ordered_quantity": 8,
+          "unit_price": "5"
+        }
+      },
+      "po": {
+        "after": {
+          "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+          "funded_value": "100",
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "paid_value": "56",
+          "po_id": 17939279253572,
+          "refunded_value": "0",
+          "status": "Funded",
+          "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+          "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+          "total_value": "100"
+        },
+        "before": {
+          "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+          "funded_value": "100",
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "paid_value": "56",
+          "po_id": 17939279253572,
+          "refunded_value": "0",
+          "status": "Funded",
+          "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+          "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+          "total_value": "100"
+        }
+      },
+      "receipt": {
+        "after": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 17939279253572,
+          "receipt_id": 2,
+          "status": "Submitted"
+        },
+        "before": {
+          "line_count": 2,
+          "line_ids": [
+            1,
+            2
+          ],
+          "po_id": 17939279253572,
+          "receipt_id": 2,
+          "status": "Submitted"
+        }
+      }
+    },
+    "stale_value_from_raw": 35
+  },
+  "stellar_cli": "stellar 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)\nstellar-xdr 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)\nxdr (9c9c145953e80990d6ff1ae3a6a973a0ce6d0694)",
+  "wasm": {
+    "path": "<repository-root>/target/wasm32v1-none/release/procuresettle.wasm",
+    "sha256": "78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c",
+    "size": 25484
+  }
+}

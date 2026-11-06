@@ -1,0 +1,69 @@
+ProcureSettle local cancellation with supplier-auth failure diagnostics
+Recorded: 2026-11-06
+Verdict: PASS
+
+Contract source:
+  Git HEAD: abc1759f73d059870efb70bb2ffb9de9d62a8de9
+  Git tree: 7fccf2e8b1f3bef60a578115013729fa31d2879e
+  Contract source files match HEAD; no contract files were changed.
+  WASM size: 25484 bytes
+  WASM SHA-256: 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+
+Proof and validation source at execution:
+  scripts/local-cancellation-proof.py SHA-256:
+    fee53274585f4a5eb183e071b11f065743a075b68f205c95a82c6585d79de991
+  .github/workflows/ci.yml SHA-256:
+    b1efc021871fd4627a22c2295ebde576ace1a9f39c0965463da4b55943217e8b
+  requirements-proof.txt SHA-256:
+    4a9025a5791070f2573ceaf2c44491cce538559a87ad227a65642ffea492b3d7
+  Evidence checksum verifier in this revision SHA-256:
+    aed5609cb7fd5bc9f310d26c5067f8affe7523fd032697c7a254cc9428774dfb
+
+Execution environment:
+  Quickstart image and actual container image ID:
+    sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295
+  Image labels: version 24.04; revision 91a64b5da2d7926bc82ae5a1f06048ef08cdcec2
+  Stellar Core: 29.0.1; commit 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c
+  Standalone local network; protocol 28
+  Network passphrase: Standalone Network ; February 2017
+  Stellar CLI: 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)
+  stellar-sdk: 13.1.0
+  Python: 3.14.6
+  Rust/Cargo: 1.95.0; soroban-sdk: 28.0.0; wasm32v1-none
+
+Reproduction command:
+  /tmp/procuresettle-sdk-venv/bin/python scripts/local-cancellation-proof.py
+    --config-dir /tmp/procuresettle-cancellation-config
+    --wasm target/wasm32v1-none/release/procuresettle.wasm
+    --report-dir /tmp/procuresettle-cancellation-final
+    --issuer-identity stage6-issuer
+    --buyer-identity stage6-buyer --buyer-address GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+    --supplier-identity stage6-supplier --supplier-address GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+    --sac-id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP
+
+Expected workflow and actual result:
+  A PO with lines 10 x 6 and 8 x 5 (total 100) was created and funded.
+  Buyer-accepted receipt deltas 6 and 4 settled 56.
+  A buyer-only cancellation transaction failed on ledger. Its fetched result
+  metadata contains the diagnostic "failed account authentication with error"
+  naming the configured supplier address. The script fails if this precise
+  supplier-auth diagnostic is absent. PO and buyer/supplier/contract SAC
+  balances were equal before and after the failed transaction.
+  Joint buyer/supplier cancellation succeeded. Final state: Cancelled, funded
+  100, paid 56, refunded 44; buyer SAC balance 88, supplier 1160, contract 0.
+  The harness fetched and checked all eight submitted transaction outcomes.
+
+Key transaction hashes:
+  Partial settlement: 155565cc7bfe81ab194f9dd3e5ab3713a856fcda293a6efe2e0bf7fcb4eee91c (tx_success)
+  Buyer-only cancel: 12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523 (tx_failed; supplier auth rejected)
+  Joint cancel: 67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558 (tx_success)
+
+The failed cancellation can consume native XLM fees; equality assertions cover
+purchase-order state and settlement-token balances. This is one local
+protocol-28 execution using a classic asset wrapped as a SAC. It is not public
+network cancellation evidence, broad custom-token compatibility, external
+review, or a security audit. Historical evidence bundles were not changed.
+
+Integrity:
+  SHA-256 of local-cancellation-proof.txt:
+    e400cdd29524593c96a9347f8e31c2884d9d1af35dd95a356c2ef58afabe94a4

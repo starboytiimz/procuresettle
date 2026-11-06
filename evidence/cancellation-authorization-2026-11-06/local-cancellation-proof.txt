@@ -1,0 +1,514 @@
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR --version
+EXIT=0
+STDOUT:
+stellar 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)
+stellar-xdr 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)
+xdr (9c9c145953e80990d6ff1ae3a6a973a0ce6d0694)
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR network info --network local
+EXIT=0
+STDOUT:
+
+STDERR:
+ℹ️  Network Id: baefd734b8d3e48472cff83912375fedbc7573701912fe308af730180f97d74a
+ℹ️  Version: 29.0.1
+ℹ️  Commit Hash: 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c
+ℹ️  Build Timestamp: 2026-10-12T20:45:52
+ℹ️  Captive Core Version: v29.0.0
+ℹ️  Protocol Version: 28
+ℹ️  Passphrase: Standalone Network ; February 2017
+ℹ️  Friendbot Url: http://localhost:8000/friendbot
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-buyer
+EXIT=0
+STDOUT:
+GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-supplier
+EXIT=0
+STDOUT:
+GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+144
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1104
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract deploy --wasm /home/mxr/timi/Drips_projects/soroban-po-receipt-settlement/target/wasm32v1-none/release/procuresettle.wasm --source-account stage6-issuer --network local
+EXIT=0
+STDOUT:
+CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS
+
+STDERR:
+ℹ️  Uploading contract WASM…
+ℹ️  Skipping install because wasm already installed
+ℹ️  Deploying contract using wasm hash 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 355aff03efcdd7a27b675126c5de70f0fc4d8f6c916f97b2429de85fd4dd6042
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+✅ Deployed!
+
+
+$ stellar tx fetch result --hash 355aff03efcdd7a27b675126c5de70f0fc4d8f6c916f97b2429de85fd4dd6042 --network local
+EXIT=0
+{"fee_charged":"19616","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"00ec1db9744f0f2e6c7c36e80df5c847270bfe56c926c4acc77c46acce78f3af"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- create_po --po_id 1793929056639 --buyer GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --supplier GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --token CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --lines '[{"line_id":1,"ordered_quantity":10,"unit_price":"6"},{"line_id":2,"ordered_quantity":8,"unit_price":"5"}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: d531c145b9fdcfdda155d5ff90fe31d0bf349836f202878128d8a1740421d993
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar tx fetch result --hash d531c145b9fdcfdda155d5ff90fe31d0bf349836f202878128d8a1740421d993 --network local
+EXIT=0
+{"fee_charged":"2516568","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"cbbc48750debb8535093b3deaf88ac7f4cff87425576a58de2bac754acdb4616"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"0","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1793929056639,"refunded_value":"0","status":"Draft","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-supplier --network local -- accept_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: eec49e2ca87424203b1b75afd43bbf4ab7e27958011dfe335342ed8d2688ef31
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar tx fetch result --hash eec49e2ca87424203b1b75afd43bbf4ab7e27958011dfe335342ed8d2688ef31 --network local
+EXIT=0
+{"fee_charged":"7915","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"cbbc48750debb8535093b3deaf88ac7f4cff87425576a58de2bac754acdb4616"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- fund_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: f4a3bd323b9e73c7d402fa5b7864c774c5780005b1b8734b2c9e4dd679fded90
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM"},{"address":"CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"100"}
+
+
+$ stellar tx fetch result --hash f4a3bd323b9e73c7d402fa5b7864c774c5780005b1b8734b2c9e4dd679fded90 --network local
+EXIT=0
+{"fee_charged":"115585","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"0d4ae4e4980e41ac6a2f6d8cee629b563090bef6497597ce173f03edf4b14a98"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"0","po_id":1793929056639,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-supplier --network local -- submit_receipt --po_id 1793929056639 --receipt_id 1 --quantities '[{"line_id":1,"quantity_delta":6},{"line_id":2,"quantity_delta":4}]'
+EXIT=0
+STDOUT:
+null
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: cf9eea21633abf15deb1f71eb6bd323527ec5309493a48f54217aa2f9444bd88
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+
+
+$ stellar tx fetch result --hash cf9eea21633abf15deb1f71eb6bd323527ec5309493a48f54217aa2f9444bd88 --network local
+EXIT=0
+{"fee_charged":"1448715","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"cbbc48750debb8535093b3deaf88ac7f4cff87425576a58de2bac754acdb4616"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- accept_receipt_and_settle --po_id 1793929056639 --receipt_id 1
+EXIT=0
+STDOUT:
+"56"
+
+STDERR:
+ℹ️  Simulating transaction…
+ℹ️  Signing transaction: 155565cc7bfe81ab194f9dd3e5ab3713a856fcda293a6efe2e0bf7fcb4eee91c
+🌎 Sending transaction…
+✅ Transaction submitted successfully!
+📅 CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP - Success - Event: [{"symbol":"transfer"},{"address":"CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS"},{"address":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC"},{"string":"LSP:GBFJEEZPHWVFXXST27YVQ2RPRHLPM76Z5HOEAKO2IREZHJFZZYUX2I6U"}] = {"i128":"56"}
+
+
+$ stellar tx fetch result --hash 155565cc7bfe81ab194f9dd3e5ab3713a856fcda293a6efe2e0bf7fcb4eee91c --network local
+EXIT=0
+{"fee_charged":"27661","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"3d25a5f322cbf72ebd25338b0122b869e7e2a389c796d9f342359c92c5ccec43"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1793929056639,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_line --po_id 1793929056639 --line_id 1
+EXIT=0
+STDOUT:
+{"accepted_quantity":6,"line_id":1,"ordered_quantity":10,"unit_price":"6"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_line --po_id 1793929056639 --line_id 2
+EXIT=0
+STDOUT:
+{"accepted_quantity":4,"line_id":2,"ordered_quantity":8,"unit_price":"5"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1160
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1793929056639,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1160
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local --build-only -- cancel_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+AAAAAgAAAADW4QGzH5WEyXHOvCNXUIvrnMwJ+u4oGaqwrJK6pQ8eWgAAAGQAAAA0AAAATQAAAAAAAAAAAAAAAQAAAAAAAAAYAAAAAAAAAAGvtRf2gDLgmJQwPRoynpkR7BKHJQj0BS3nygG9egf+9AAAAAljYW5jZWxfcG8AAAAAAAABAAAABQAAAaGugRF/AAAAAAAAAAAAAAAA
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-buyer
+EXIT=0
+STDOUT:
+GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-supplier
+EXIT=0
+STDOUT:
+GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+
+STDERR:
+
+
+SDK sendTransaction hash=12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523 supplier_authorized=False
+SDK getTransaction hash=12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523 status=FAILED result_xdr=AAAAAAAAVK3/////AAAAAQAAAAAAAAAY/////gAAAAA=
+
+$ stellar tx fetch result --hash 12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523 --network local
+EXIT=0
+{"fee_charged":"21677","result":{"tx_failed":[{"op_inner":{"invoke_host_function":"trapped"}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1793929056639,"refunded_value":"0","status":"Funded","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1160
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --network local
+EXIT=0
+STDOUT:
+44
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local --build-only -- cancel_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+AAAAAgAAAADW4QGzH5WEyXHOvCNXUIvrnMwJ+u4oGaqwrJK6pQ8eWgAAAGQAAAA0AAAATgAAAAAAAAAAAAAAAQAAAAAAAAAYAAAAAAAAAAGvtRf2gDLgmJQwPRoynpkR7BKHJQj0BS3nygG9egf+9AAAAAljYW5jZWxfcG8AAAAAAAABAAAABQAAAaGugRF/AAAAAAAAAAAAAAAA
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-buyer
+EXIT=0
+STDOUT:
+GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR keys public-key stage6-supplier
+EXIT=0
+STDOUT:
+GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+
+STDERR:
+
+
+SDK sendTransaction hash=67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558 supplier_authorized=True
+SDK getTransaction hash=67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558 status=SUCCESS result_xdr=AAAAAAAAhtQAAAAAAAAAAQAAAAAAAAAYAAAAAHzaOf75nWCnnm9T52JV2rBhrvhM8yy9XnQ2rloIJAi/AAAAAA==
+
+$ stellar tx fetch result --hash 67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558 --network local
+EXIT=0
+{"fee_charged":"34516","result":{"tx_success":[{"op_inner":{"invoke_host_function":{"success":"7cda39fef99d60a79e6f53e76255dab061aef84cf32cbd5e7436ae5a082408bf"}}}]},"ext":"v0"}
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR contract invoke --contract-id CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --source-account stage6-buyer --network local -- get_po --po_id 1793929056639
+EXIT=0
+STDOUT:
+{"buyer":"GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM","funded_value":"100","line_count":2,"line_ids":[1,2],"paid_value":"56","po_id":1793929056639,"refunded_value":"44","status":"Cancelled","supplier":"GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC","token":"CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP","total_value":"100"}
+
+STDERR:
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM --network local
+EXIT=0
+STDOUT:
+88
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC --network local
+EXIT=0
+STDOUT:
+1160
+
+STDERR:
+
+
+$ stellar --config-dir $PRIVATE_CONFIG_DIR token balance --id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP --account CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS --network local
+EXIT=0
+STDOUT:
+0
+
+STDERR:
+
+
+CANCELLATION_PROOF_SUMMARY_JSON:
+{
+  "contract_id": "CCX3KF7WQAZOBGEUGA6RUMU6TEI6YEUHEUEPIBJN47FADPL2A77PJEKS",
+  "expected_final_economic_state": {
+    "buyer_balance": 88,
+    "contract_balance": 0,
+    "funded_value": 100,
+    "paid_value": 56,
+    "refunded_value": 44,
+    "status": "Cancelled",
+    "supplier_balance": 1160
+  },
+  "final_state": {
+    "buyer": 88,
+    "contract": 0,
+    "po": {
+      "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+      "funded_value": "100",
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "paid_value": "56",
+      "po_id": 1793929056639,
+      "refunded_value": "44",
+      "status": "Cancelled",
+      "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+      "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+      "total_value": "100"
+    },
+    "supplier": 1160
+  },
+  "initial_balances": {
+    "buyer": 144,
+    "supplier": 1104
+  },
+  "network": "\u2139\ufe0f  Network Id: baefd734b8d3e48472cff83912375fedbc7573701912fe308af730180f97d74a\n\u2139\ufe0f  Version: 29.0.1\n\u2139\ufe0f  Commit Hash: 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c\n\u2139\ufe0f  Build Timestamp: 2026-10-12T20:45:52\n\u2139\ufe0f  Captive Core Version: v29.0.0\n\u2139\ufe0f  Protocol Version: 28\n\u2139\ufe0f  Passphrase: Standalone Network ; February 2017\n\u2139\ufe0f  Friendbot Url: http://localhost:8000/friendbot",
+  "partial_settlement": {
+    "buyer": 44,
+    "contract": 44,
+    "line_1": {
+      "accepted_quantity": 6,
+      "line_id": 1,
+      "ordered_quantity": 10,
+      "unit_price": "6"
+    },
+    "line_2": {
+      "accepted_quantity": 4,
+      "line_id": 2,
+      "ordered_quantity": 8,
+      "unit_price": "5"
+    },
+    "po": {
+      "buyer": "GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM",
+      "funded_value": "100",
+      "line_count": 2,
+      "line_ids": [
+        1,
+        2
+      ],
+      "paid_value": "56",
+      "po_id": 1793929056639,
+      "refunded_value": "0",
+      "status": "Funded",
+      "supplier": "GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC",
+      "token": "CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP",
+      "total_value": "100"
+    },
+    "supplier": 1160
+  },
+  "po_id": 1793929056639,
+  "source_commit": "abc1759f73d059870efb70bb2ffb9de9d62a8de9",
+  "stellar_cli": "stellar 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)\nstellar-xdr 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)\nxdr (9c9c145953e80990d6ff1ae3a6a973a0ce6d0694)",
+  "stellar_sdk": "13.1.0",
+  "transaction_results": [
+    {
+      "hash": "355aff03efcdd7a27b675126c5de70f0fc4d8f6c916f97b2429de85fd4dd6042",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "d531c145b9fdcfdda155d5ff90fe31d0bf349836f202878128d8a1740421d993",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "eec49e2ca87424203b1b75afd43bbf4ab7e27958011dfe335342ed8d2688ef31",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "f4a3bd323b9e73c7d402fa5b7864c774c5780005b1b8734b2c9e4dd679fded90",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "cf9eea21633abf15deb1f71eb6bd323527ec5309493a48f54217aa2f9444bd88",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "155565cc7bfe81ab194f9dd3e5ab3713a856fcda293a6efe2e0bf7fcb4eee91c",
+      "outcome": "tx_success"
+    },
+    {
+      "hash": "12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523",
+      "outcome": "tx_failed"
+    },
+    {
+      "hash": "67c546ffffd4d20d6a0147f398eaed4702a1b5bf1b53a4e211c0a9db2acad558",
+      "outcome": "tx_success"
+    }
+  ],
+  "unauthorized_before_after_equal": true,
+  "unauthorized_cancellation_rejected": true,
+  "unauthorized_output": "tx_hash=12dcd5bf49eef022f484f5eddd973251add2d5430a89b117c47a017e9b5dd523 status=FAILED supplier authorization rejected for GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC error_result=AAAAAAAAVK3/////AAAAAQAAAAAAAAAY/////gAAAAA=",
+  "verdict": "PASS",
+  "wasm_sha256": "78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c",
+  "wasm_size": 25484
+}

@@ -1,0 +1,80 @@
+ProcureSettle local joint-cancellation and refund evidence
+Recorded: 2026-11-06
+Verdict: PASS
+
+Tested contract source:
+  Git HEAD: abc1759f73d059870efb70bb2ffb9de9d62a8de9
+  Git tree: 7fccf2e8b1f3bef60a578115013729fa31d2879e
+  Contract source files matched HEAD; `git diff -- contracts` was empty.
+  No Git history was rewritten. The proof harness was uncommitted.
+
+Proof harness and workflow identity at execution:
+  scripts/local-cancellation-proof.py SHA-256:
+    d1433df2a7555b979ecb175e0113ae29d0df9606312fedd8cb7ff051db9d627c
+  .github/workflows/ci.yml SHA-256:
+    dfc64d20f8d916a9f8fbfa2335dad0daf336b031ec5416e9eed75be4d4420178
+  requirements-proof.txt SHA-256:
+    4a9025a5791070f2573ceaf2c44491cce538559a87ad227a65642ffea492b3d7
+
+Contract artifact:
+  target/wasm32v1-none/release/procuresettle.wasm
+  Size: 25484 bytes
+  SHA-256: 78b5c6dec22ad1cea497223ff411af544dcd1e9fd613b85514f2c5ae03873a7c
+
+Environment:
+  Docker image: stellar/quickstart@sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295
+  Actual container image ID: sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295
+  Quickstart labels: version 24.04; revision 91a64b5da2d7926bc82ae5a1f06048ef08cdcec2
+  Stellar Core: 29.0.1; commit 055dc9c7a9a9e038c6807a555c09bd94b85c9e2c
+  Network: standalone local ledger; protocol 28
+  Network passphrase: Standalone Network ; February 2017
+  Stellar CLI: 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)
+  stellar-xdr: 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)
+  stellar-sdk: 13.1.0
+  Python: 3.14
+  Rust/Cargo: 1.95.0; soroban-sdk: 28.0.0; target wasm32v1-none
+
+Exact harness invocation (identities were stored only in the private config):
+  /tmp/procuresettle-sdk-venv/bin/python scripts/local-cancellation-proof.py
+    --config-dir /tmp/procuresettle-cancellation-config
+    --wasm target/wasm32v1-none/release/procuresettle.wasm
+    --report-dir /tmp/procuresettle-cancellation-attempt4
+    --issuer-identity stage6-issuer
+    --buyer-identity stage6-buyer --buyer-address GDLOCANTD6KYJSLRZ26CGV2QRPVZZTAJ7LXCQGNKWCWJFOVFB4PFUOOM
+    --supplier-identity stage6-supplier --supplier-address GDEJFEFDCWSIEP65NZGXWEBYBKD6T7MKPVUV4K5DXW2QY3NLWL3GVWOC
+    --sac-id CAZBWI3NN5KHFRGXAINQQ2YI3LGHOGNP5EFIQGYJOVWUL4YOBWYD2CNP
+
+Expected behavior:
+  Create a 100-unit PO (10 x 6 plus 8 x 5), fund it, accept receipt deltas
+  6 and 4, and settle 56. A buyer-only cancellation must fail on ledger and
+  leave the PO and SAC balances unchanged. Joint buyer/supplier authorization
+  must cancel the PO and refund the 44 unpaid units to the buyer.
+
+Observed result:
+  PO ID: 1793927552578
+  Contract: CBLEH5CXT3BEBHTWRK77XMOR2MQTS4RW6HSG4ILUBEQNIVAEBWJM4PV6
+  Successful partial settlement transaction:
+    05889c038d93b212b6dbdec6ed3ca99401baad1ba6e6b811f3effbece1f0a41a
+  Buyer-only cancellation, fetched on-ledger outcome tx_failed:
+    dd6618ae43ee7ae9849cc2c0c1800901c3f1f2b41b368c180d536c294e2e599c
+  Joint cancellation, fetched on-ledger outcome tx_success:
+    6937334d0af0386a7934925cf6eb3de27d0154c4482d411d688c8d31603d4d1f
+  Final PO: Cancelled; funded 100; paid 56; refunded 44
+  Final SAC balances: buyer 44; supplier 542; contract 0
+  Unauthorized attempt pre/post PO and buyer/supplier/contract SAC snapshots
+  compared equal. The failed transaction can consume native XLM fees; those
+  fees were not part of the economic-state comparison.
+  All eight submitted transaction results were fetched and checked. See the
+  transcript for commands and raw CLI results. The script exits zero only when
+  those results and the expected final state match.
+
+Evidence limits:
+  This is one local execution using a classic asset wrapped as a SAC. It is
+  not Testnet/Mainnet cancellation evidence, a security audit, custom SEP-41
+  compatibility evidence, or evidence of independent review. It does not
+  establish TTL restoration after inactivity or measure native XLM fees.
+  The historical bundles using stellar/quickstart:latest were not changed.
+
+Integrity:
+  SHA-256 of local-cancellation-proof.txt:
+    6659be39224fc633476e9bf3fc0c8152e9df449e8cbfcf3f1b0ffb428dae0830
