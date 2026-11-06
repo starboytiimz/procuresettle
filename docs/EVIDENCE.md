@@ -105,16 +105,40 @@ records the first issuer request returning 502, then HTTP 200 on retry, with
 buyer and supplier returning HTTP 200. Persistent funding or Horizon failure
 still fails the job before the proof runs.
 
-The latest hosted run on source `abc1759f73d059870efb70bb2ffb9de9d62a8de9`,
+The previous hosted run on source `abc1759f73d059870efb70bb2ffb9de9d62a8de9`,
 [run 41080992916](https://github.com/starboytiimz/procuresettle/actions/runs/41080992916),
-completed the `verify` job successfully, including formatting, workspace tests,
-and contract build. The `flagship` job started the local network and passed
-network/image checks, but account setup failed before either proof ran: the
-Friendbot returned HTTP 502, then 200, while Horizon account requests returned
-HTTP 503 throughout the workflow's five attempts. The flagship proof step was
-skipped and no proof artifact was produced. The workflow changes in this
-revision add a Horizon readiness check and a bounded 30-attempt funding wait;
-the revised workflow has not been run in hosted Actions.
+passed `verify` but failed during account setup before either proof ran:
+Friendbot returned HTTP 502 and then 200, while Horizon account requests
+returned HTTP 503 through that workflow's five attempts. It produced no proof
+artifact. This remains a historical failure record.
+
+On 2026-11-06, hosted run
+[42148702120](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120)
+checked out the exact source revision
+[`25726ae01f2e53e56cd94f43521db414992fa18b`](https://github.com/starboytiimz/procuresettle/commit/25726ae01f2e53e56cd94f43521db414992fa18b).
+The concise reproduction and review brief is in
+[`docs/REVIEWER-PACKET.md`](REVIEWER-PACKET.md).
+The [`verify` job](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120/job/127666355221)
+passed formatting, all 64 workspace tests, proof-script compilation and
+evidence checksums, Stellar CLI version verification, and contract build. The
+[`flagship` job](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120/job/127666354916)
+passed pinned Quickstart image verification and protocol-28 network setup,
+including the Horizon account API readiness check, then executed both local
+proofs and uploaded the raw proof artifact. The image digest was
+`sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295`;
+the running image ID was `sha256:cb57db5af414ee0ff3bd809a58f72c1cba1a21154a706c424342d1ec09b33063`.
+
+The hosted flagship artifact was downloaded and inspected. The settlement
+proof recorded payouts 56 and 44, a changed-quantity payout of 50, and a stale
+receipt rejection (`QuantityExceedsRemaining`) with unchanged PO, line, receipt,
+and token-balance state. Three control reruns also passed. The cancellation
+proof recorded an unauthorized cancellation transaction as `tx_failed` with
+the PO and settlement-token balances unchanged, followed by a successful joint
+cancellation. Final state was `Cancelled`, funded 100, paid 56, refunded 44,
+and contract token balance zero. Its eight submitted transaction results were
+fetched and checked. The raw artifacts are attached to the hosted run and have
+the workflow's 30-day artifact retention; the committed local evidence bundles
+remain the durable records.
 
 ## Local joint cancellation and refund proof
 
