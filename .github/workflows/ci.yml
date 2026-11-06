@@ -170,6 +170,7 @@ jobs:
           docker image inspect "$image_id" --format 'quickstart_version={{index .Config.Labels "org.opencontainers.image.version"}} quickstart_revision={{index .Config.Labels "org.opencontainers.image.revision"}} repo_digests={{json .RepoDigests}}'
 
       - name: Create local proof identities and SAC
+        id: local_setup
         shell: bash
         run: |
           set -euo pipefail
@@ -179,6 +180,35 @@ jobs:
           done
           for identity in stage6-issuer stage6-buyer stage6-supplier; do
             address=$(stellar --config-dir "$STELLAR_CONFIG_DIR" keys public-key "$identity")
+            # The classic trustline and asset setup below uses Horizon-backed
+            # Stellar transactions. Wait for the actual account API route,
+            # rather than relying only on Quickstart health and its root page.
+            horizon_ready=false
+            for attempt in $(seq 1 30); do
+              horizon_status=$(curl --silent --show-error \
+                --output "$RUNNER_TEMP/horizon-probe-${identity}.json" \
+                --write-out '%{http_code}' \
+                "http://localhost:8000/accounts/$address" || true)
+              if [ "$horizon_status" = "404" ]; then
+                horizon_ready=true
+                break
+              fi
+              if [ "$horizon_status" = "200" ] \
+                && jq -e --arg address "$address" \
+                  '.account_id == $address' \
+                  "$RUNNER_TEMP/horizon-probe-${identity}.json" >/dev/null; then
+                horizon_ready=true
+                break
+              fi
+              echo "Horizon account API HTTP $horizon_status for $identity (readiness attempt $attempt)"
+              if [ "$attempt" -lt 30 ]; then sleep 2; fi
+            done
+            if [ "$horizon_ready" != true ]; then
+              cat "$RUNNER_TEMP/horizon-probe-${identity}.json" 2>/dev/null || true
+              echo "Horizon account API did not become ready for $identity after 30 attempts" >&2
+              exit 1
+            fi
+
             # Quickstart Friendbot can transiently return 502, and the CLI's
             # keys fund parser has rejected otherwise usable responses. Retry
             # the local endpoint, but accept funding only after Horizon confirms
@@ -237,6 +267,7 @@ jobs:
           echo "Local supplier: $supplier"
           echo "Local asset: $asset"
           echo "Local SAC: $sac"
+          echo "ready=true" >> "$GITHUB_OUTPUT"
 
       - name: Run real local flagship proof
         run: |
@@ -250,6 +281,7 @@ jobs:
             --sac-id "$STAGE6_SAC"
 
       - name: Run local cancellation and refund proof
+        if: ${{ !cancelled() && steps.local_setup.outputs.ready == 'true' }}
         run: |
           python3 scripts/local-cancellation-proof.py \
             --config-dir "$STELLAR_CONFIG_DIR" \

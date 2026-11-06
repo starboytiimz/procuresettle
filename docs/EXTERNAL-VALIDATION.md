@@ -25,11 +25,11 @@ Testnet context and the supported setup.
 
 > Hi [Name],
 >
-> I’m looking for an independent technical review or reproduction of
+> I’m looking for an independent reproduction and technical review of
 > ProcureSettle, a Soroban contract that calculates supplier payouts from
-> buyer-accepted receipt quantities and stored purchase-order prices. Would
-> you review the bounded settlement and authorization workflow, or independently
-> run it on a disposable protocol-28 local ledger?
+> buyer-accepted receipt quantities and stored purchase-order prices. Could
+> you run the bounded proof on a disposable protocol-28 local ledger and review
+> the settlement arithmetic, authorization checks, and resulting state?
 >
 > Evidence and reproduction references: `docs/EVIDENCE.md`,
 > `CONTRIBUTING.md`, `evidence/local-2026-11-06/`, and
@@ -37,13 +37,30 @@ Testnet context and the supported setup.
 > test-only Stellar Asset Contract; it requires no Testnet/Mainnet funds or
 > production systems. I’d value your view on the settlement arithmetic,
 > Soroban authorization checks, and whether the evidence supports the stated
-> behavior and limits. Please share any failed steps or concerns as well as
-> successful results.
+> behavior and limits. Please record the source revision, environment,
+> commands, results, and any failed steps or concerns.
 >
 > This is a request for independent technical scrutiny only. It does not ask
 > for integration, adoption, or endorsement. Please let me know whether you
-> prefer code review, independent reproduction, or both, and what attribution
-> you consent to if results are documented.
+> consent to having a factual summary of your findings recorded; attribution
+> will be used only with your permission.
+
+## Potential independent reviewers
+
+- **Trustless Work smart-contract team:** its public repository describes a
+  Stellar/Soroban escrow ecosystem and identifies a smart-contract developer.
+  The overlap is escrow authorization and fund movement, making the team a
+  relevant independent reviewer of the contract and reproduction. This is a
+  proposed contact only; no relationship or response is implied. See the
+  [Trustless Work repository](https://github.com/Trustless-Work/trustlesswork-spikes).
+- **Stellar developer community:** seek a Soroban Rust developer through the
+  [Stellar developer channels](https://stellar.org/soroban), especially someone
+  experienced with authorization, token transfers, and local-ledger testing.
+  This can broaden the review beyond escrow-specific assumptions.
+- **Movix maintainers (narrow scope):** because the compatibility fixture maps
+  values from pinned Movix source, its maintainers could check that mapping.
+  That would validate only the source/fixture correspondence, not ProcureSettle
+  settlement behavior, integration, or endorsement.
 
 ## Bounded workflow and questions
 
