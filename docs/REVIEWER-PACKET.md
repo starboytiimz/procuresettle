@@ -2,11 +2,13 @@
 
 ## Review target
 
-- **Tested revision:** [`25726ae01f2e53e56cd94f43521db414992fa18b`](https://github.com/starboytiimz/procuresettle/commit/25726ae01f2e53e56cd94f43521db414992fa18b)
-- **Hosted Actions run:** [42148702120](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120)
-- **Verify job:** [127666355221](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120/job/127666355221)
-- **Flagship proof job:** [127666354916](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120/job/127666354916)
-- **Hosted proof artifact:** `procuresettle-hosted-flagship-proof`, attached to the run above. The workflow retains it for 30 days.
+- **Latest tested revision:** [`ebeefae7a2e6765a2cb166d3b77be63656fd3d56`](https://github.com/starboytiimz/procuresettle/commit/ebeefae7a2e6765a2cb166d3b77be63656fd3d56)
+- **Latest hosted Actions run:** [42155230066](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066)
+- **Verify job:** [127687683885](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683885)
+- **Flagship proof job:** [127687683545](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683545)
+- **Hosted proof artifact:** `procuresettle-hosted-flagship-proof`, artifact ID `13474451394`; [download ZIP](https://api.github.com/repos/starboytiimz/procuresettle/actions/artifacts/13474451394/zip). It expires December 6, 2026.
+
+The earlier successful run [42148702120](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120) tested revision [`25726ae01f2e53e56cd94f43521db414992fa18b`](https://github.com/starboytiimz/procuresettle/commit/25726ae01f2e53e56cd94f43521db414992fa18b). No contract files changed between `25726ae` and `ebeefae`; the newer run is the latest hosted proof record, while the earlier run remains valid evidence for its tested revision. Both are project-controlled hosted executions, not independent external reproduction or review.
 
 ProcureSettle is a Soroban purchase-order settlement contract. It computes
 supplier payouts from buyer-accepted receipt quantity deltas and stored unit

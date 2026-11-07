@@ -112,7 +112,7 @@ Friendbot returned HTTP 502 and then 200, while Horizon account requests
 returned HTTP 503 through that workflow's five attempts. It produced no proof
 artifact. This remains a historical failure record.
 
-On 2026-11-06, hosted run
+On 2026-11-06, the earlier hosted run
 [42148702120](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120)
 checked out the exact source revision
 [`25726ae01f2e53e56cd94f43521db414992fa18b`](https://github.com/starboytiimz/procuresettle/commit/25726ae01f2e53e56cd94f43521db414992fa18b).
@@ -139,6 +139,29 @@ and contract token balance zero. Its eight submitted transaction results were
 fetched and checked. The raw artifacts are attached to the hosted run and have
 the workflow's 30-day artifact retention; the committed local evidence bundles
 remain the durable records.
+
+### Latest hosted proof on `ebeefae`
+
+On 2026-11-06, hosted run
+[`42155230066`](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066)
+tested source revision
+[`ebeefae7a2e6765a2cb166d3b77be63656fd3d56`](https://github.com/starboytiimz/procuresettle/commit/ebeefae7a2e6765a2cb166d3b77be63656fd3d56).
+The [`verify` job](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683885)
+and [`flagship` job](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683545)
+both passed. Its `procuresettle-hosted-flagship-proof` artifact is ID
+`13474451394`, available as a [download ZIP](https://api.github.com/repos/starboytiimz/procuresettle/actions/artifacts/13474451394/zip)
+through December 6, 2026. Both proof summaries identify `ebeefae` as the
+tested source revision. The contract files are unchanged between this revision
+and `25726ae`; this is the newest project-controlled hosted execution, not an
+independent reproduction or review.
+
+The artifact records settlement payouts of 56 and 44, changed-quantity payout
+50, and stale-receipt rejection with compared state unchanged. It records the
+unauthorized cancellation rejection and successful joint cancellation with
+funded 100, paid 56, refunded 44, final status `Cancelled`, and zero contract
+token balance. The earlier successful run `42148702120` on `25726ae`, described
+above, remains a separate valid historical proof record and is not superseded
+as evidence for that revision.
 
 ## Local joint cancellation and refund proof
 
