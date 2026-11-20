@@ -44,6 +44,11 @@ ProcureSettle is available, at your choice, under either the [MIT License](LICEN
 or the [Apache License, Version 2.0](LICENSE-APACHE). The contract crate declares
 the same SPDX expression, `MIT OR Apache-2.0`.
 
+## Data model
+
+See the [data model specification](docs/DATA-MODEL.md) for the persistent
+storage layout: `DataKey`, structs, and why lines are stored as separate keys.
+
 ## Contributing and provenance
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for pinned tools, build and test commands,
