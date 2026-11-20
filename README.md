@@ -38,6 +38,11 @@ cargo test --workspace --locked
 stellar contract build --locked --package procuresettle
 ```
 
+## Architecture
+
+See the [architecture overview](docs/ARCHITECTURE.md) for how the contract, scripts,
+evidence bundles, and CI pipeline fit together.
+
 ## License
 
 ProcureSettle is available, at your choice, under either the [MIT License](LICENSE-MIT)
