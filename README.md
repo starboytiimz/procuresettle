@@ -50,6 +50,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for pinned tools, build and test commands
 proof reproduction, and contribution standards. The [provenance record](docs/PROVENANCE.md)
 documents the LineSettle to ProcureSettle rename without rewriting history.
 
+## Contract events
+
+See the [contract events specification](docs/EVENTS.md) for event topics, data
+schemas, and indexer parsing recommendations.
+
 ## Limits
 
 - ProcureSettle has a public Stellar Testnet flagship proof; no Mainnet
