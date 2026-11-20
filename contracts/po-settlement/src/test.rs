@@ -2591,3 +2591,76 @@ fn draft_po_cannot_be_mutually_cancelled() {
     assert_eq!(result, Err(Ok(PoError::InvalidState)));
     assert_eq!(header(&f, 210).status, PoStatus::Draft);
 }
+
+#[test]
+fn worked_example_three_lines_three_partial_receipts() {
+    // Mirrors docs/EXAMPLES.md; keep the two in sync.
+    let f = fixture();
+    let lines = soroban_sdk::vec![
+        &f.env,
+        LineInput {
+            line_id: 1,
+            ordered_quantity: 100,
+            unit_price: 5
+        },
+        LineInput {
+            line_id: 2,
+            ordered_quantity: 40,
+            unit_price: 25
+        },
+        LineInput {
+            line_id: 3,
+            ordered_quantity: 60,
+            unit_price: 10
+        },
+    ];
+    StellarAssetClient::new(&f.env, &f.token)
+        .mock_all_auths()
+        .mint(&f.buyer, &10_000);
+    create_and_accept(&f, 300, &lines);
+    f.client().mock_all_auths().fund_po(&300);
+    assert_eq!(header(&f, 300).total_value, 2_100);
+
+    let balances = |buyer: i128, contract: i128, supplier: i128| {
+        assert_eq!(token_balance(&f, &f.buyer), buyer);
+        assert_eq!(token_balance(&f, &f.contract), contract);
+        assert_eq!(token_balance(&f, &f.supplier), supplier);
+    };
+    let receipt = |entries: &[(u32, u64)]| {
+        let mut v = Vec::new(&f.env);
+        for (line_id, quantity_delta) in entries {
+            v.push_back(ReceiptQuantityInput {
+                line_id: *line_id,
+                quantity_delta: *quantity_delta,
+            });
+        }
+        v
+    };
+    balances(7_900, 2_100, 0);
+
+    // Receipt 1: Cement 60, Steel 40 -> 300 + 1,000.
+    authorized_submit(&f, 300, 1, &receipt(&[(1, 60), (2, 40)]));
+    assert_eq!(authorized_settle(&f, 300, 1), 1_300);
+    balances(7_900, 800, 1_300);
+    assert_eq!(header(&f, 300).paid_value, 1_300);
+    assert_eq!(header(&f, 300).status, PoStatus::Funded);
+    assert_po_conservation(&f, 300);
+
+    // Receipt 2: Cement 40, Timber 25 -> 200 + 250.
+    authorized_submit(&f, 300, 2, &receipt(&[(1, 40), (3, 25)]));
+    assert_eq!(authorized_settle(&f, 300, 2), 450);
+    balances(7_900, 350, 1_750);
+    assert_eq!(header(&f, 300).paid_value, 1_750);
+    assert_eq!(header(&f, 300).status, PoStatus::Funded);
+    assert_po_conservation(&f, 300);
+
+    // Receipt 3: Timber 35 -> 350, automatic closeout.
+    authorized_submit(&f, 300, 3, &receipt(&[(3, 35)]));
+    assert_eq!(authorized_settle(&f, 300, 3), 350);
+    balances(7_900, 0, 2_100);
+    let po = header(&f, 300);
+    assert_eq!(po.paid_value, 2_100);
+    assert_eq!(po.refunded_value, 0);
+    assert_eq!(po.status, PoStatus::Closed);
+    assert_po_conservation(&f, 300);
+}
