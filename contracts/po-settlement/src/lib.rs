@@ -612,6 +612,20 @@ impl PoSettlement {
             .ok_or(PoError::ReceiptNotFound)
     }
 
+    /// Read-only status lookup that does not expose the receipt's line ID vector.
+    pub fn get_receipt_status(
+        env: Env,
+        po_id: u64,
+        receipt_id: u64,
+    ) -> Result<ReceiptStatus, PoError> {
+        extend_contract_ttl(&env);
+        env.storage()
+            .persistent()
+            .get::<_, Receipt>(&DataKey::Receipt(po_id, receipt_id))
+            .map(|receipt| receipt.status)
+            .ok_or(PoError::ReceiptNotFound)
+    }
+
     pub fn get_receipt_line(
         env: Env,
         po_id: u64,
