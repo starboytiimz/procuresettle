@@ -1,0 +1,12 @@
+# GitHub issue template configuration
+# See: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository
+
+blank_issues_enabled: true
+
+contact_links:
+  - name: Documentation
+    url: https://github.com/starboytiimz/procuresettle#readme
+    about: Check the README for usage information
+  - name: Discussions
+    url: https://github.com/starboytiimz/procuresettle/discussions
+    about: Start a discussion for questions or ideas
