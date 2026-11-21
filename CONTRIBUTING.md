@@ -78,12 +78,17 @@ From the repository root:
 
 ```sh
 cargo +1.95.0 fmt --all -- --check
+bash scripts/check-formatting.sh
 cargo +1.95.0 clippy --workspace --all-targets --locked -- -D warnings
 cargo +1.95.0 test --workspace --locked
 git diff --exit-code Cargo.lock
 stellar contract build --locked --package procuresettle
 python3 scripts/verify-evidence-checksums.py
 ```
+
+`scripts/check-formatting.sh` checks trailing whitespace and final newlines in
+tracked text files. Both local proof scripts also support `--dry-run`, which
+validates inputs and prints the planned transactions without Docker or RPC.
 
 The lockfile is committed; keep `--locked` in validation commands. Add tests
 for behavior changes, including boundary and failure cases. A passing host test

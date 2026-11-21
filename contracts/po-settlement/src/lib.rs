@@ -356,6 +356,11 @@ impl PoSettlement {
         header.funded_value = header.total_value;
         header.status = PoStatus::Funded;
         env.storage().persistent().set(&key, &header);
+        #[allow(deprecated)]
+        env.events().publish(
+            (Symbol::new(&env, "po_funded"), po_id),
+            (header.buyer.clone(), header.total_value),
+        );
         Ok(())
     }
 
@@ -481,6 +486,11 @@ impl PoSettlement {
             );
             i += 1;
         }
+        #[allow(deprecated)]
+        env.events().publish(
+            (Symbol::new(&env, "receipt_submitted"), po_id, receipt_id),
+            header.supplier.clone(),
+        );
         Ok(())
     }
 

@@ -66,9 +66,16 @@ jobs:
           done
 
       - name: Install pinned Stellar CLI
-        uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd
-        with:
-          version: 28.1.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=28.1.0
+          asset="stellar-cli-${version}-x86_64-unknown-linux-gnu.tar.gz"
+          curl -fsSL \
+            "https://github.com/stellar/stellar-cli/releases/download/v${version}/${asset}" \
+            -o "$asset"
+          tar -xzf "$asset"
+          sudo install stellar /usr/local/bin/stellar
 
       - name: Verify Stellar CLI version
         run: |
@@ -117,9 +124,16 @@ jobs:
           git rev-parse HEAD
 
       - name: Install pinned Stellar CLI
-        uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd
-        with:
-          version: 28.1.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=28.1.0
+          asset="stellar-cli-${version}-x86_64-unknown-linux-gnu.tar.gz"
+          curl -fsSL \
+            "https://github.com/stellar/stellar-cli/releases/download/v${version}/${asset}" \
+            -o "$asset"
+          tar -xzf "$asset"
+          sudo install stellar /usr/local/bin/stellar
 
       - name: Verify Stellar CLI version
         run: |
@@ -158,11 +172,20 @@ jobs:
           echo "Pinned Quickstart image: $image (image_id=$digest_image_id)"
 
       - name: Start fresh local Stellar network
+        shell: bash
         run: |
+          set -euo pipefail
           stellar --config-dir "$STELLAR_CONFIG_DIR" container start local \
             --name procuresettle-local-proof --cpus 2 --memory 4g \
             --protocol-version 28 --image-tag-override "$QUICKSTART_IMAGE_TAG"
           stellar --config-dir "$STELLAR_CONFIG_DIR" network use local
+          container_image_id=$(docker inspect "$QUICKSTART_CONTAINER" --format '{{.Image}}')
+          pinned_image_id=$(docker image inspect "stellar/quickstart@$QUICKSTART_IMAGE_DIGEST" --format '{{.Id}}')
+          if [ "$container_image_id" != "$pinned_image_id" ]; then
+            echo "Quickstart container started from $container_image_id, expected pinned image $pinned_image_id" >&2
+            exit 1
+          fi
+          echo "Quickstart container is using the pinned image: $pinned_image_id"
 
       - name: Wait for local network readiness and record image identity
         shell: bash

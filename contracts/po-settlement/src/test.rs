@@ -991,6 +991,33 @@ fn successful_funding_transfers_exact_stored_total_and_preserves_terms() {
 }
 
 #[test]
+fn funding_publishes_po_funded_event_with_buyer_and_total_value() {
+    let f = fixture();
+    let lines = valid_lines(&f.env);
+    let admin = StellarAssetClient::new(&f.env, &f.token);
+    admin.mock_all_auths().mint(&f.buyer, &500);
+    create_and_accept(&f, 91, &lines);
+
+    f.client().mock_all_auths().fund_po(&91);
+
+    assert_eq!(
+        f.env.events().all().filter_by_contract(&f.contract),
+        soroban_sdk::vec![
+            &f.env,
+            (
+                f.contract.clone(),
+                soroban_sdk::vec![
+                    &f.env,
+                    Symbol::new(&f.env, "po_funded").into_val(&f.env),
+                    91_u64.into_val(&f.env),
+                ],
+                (f.buyer.clone(), 100_i128).into_val(&f.env),
+            ),
+        ]
+    );
+}
+
+#[test]
 fn funding_before_acceptance_fails_without_moving_tokens_or_state() {
     let f = fixture();
     let lines = valid_lines(&f.env);
@@ -1176,6 +1203,32 @@ fn valid_receipt_submission_only_records_supplier_assertion() {
     assert_eq!(token_balance(&f, &f.buyer), buyer_before);
     assert_eq!(token_balance(&f, &f.contract), contract_before);
     assert_eq!(token_balance(&f, &f.supplier), 0);
+}
+
+#[test]
+fn receipt_submission_publishes_receipt_submitted_event_with_supplier() {
+    let f = fixture();
+    funded_flagship(&f, 92);
+    let quantities = valid_receipt(&f);
+
+    authorized_submit(&f, 92, 1, &quantities);
+
+    assert_eq!(
+        f.env.events().all().filter_by_contract(&f.contract),
+        soroban_sdk::vec![
+            &f.env,
+            (
+                f.contract.clone(),
+                soroban_sdk::vec![
+                    &f.env,
+                    Symbol::new(&f.env, "receipt_submitted").into_val(&f.env),
+                    92_u64.into_val(&f.env),
+                    1_u64.into_val(&f.env),
+                ],
+                f.supplier.clone().into_val(&f.env),
+            ),
+        ]
+    );
 }
 
 #[test]
