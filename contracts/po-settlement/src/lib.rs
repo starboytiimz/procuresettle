@@ -633,6 +633,22 @@ impl PoSettlement {
             .ok_or(PoError::NotFound)
     }
 
+    pub fn get_po_status(env: Env, po_id: u64) -> Result<PoStatus, PoError> {
+        env.storage()
+            .persistent()
+            .get::<_, PurchaseOrder>(&DataKey::Header(po_id))
+            .map(|header| header.status)
+            .ok_or(PoError::NotFound)
+    }
+
+    pub fn is_po_closed(env: Env, po_id: u64) -> Result<bool, PoError> {
+        env.storage()
+            .persistent()
+            .get::<_, PurchaseOrder>(&DataKey::Header(po_id))
+            .map(|header| header.status == PoStatus::Closed)
+            .ok_or(PoError::NotFound)
+    }
+
     pub fn get_line(env: Env, po_id: u64, line_id: u32) -> Result<PoLine, PoError> {
         extend_contract_ttl(&env);
         env.storage()
