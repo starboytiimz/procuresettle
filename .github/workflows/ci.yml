@@ -66,7 +66,7 @@ jobs:
           done
 
       - name: Install pinned Stellar CLI
-        uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd
+        uses: stellar/stellar-cli@f2a7b74175c34585f3b30a1abf42a2d41cbcc390
         with:
           version: 28.1.0
 
@@ -117,7 +117,7 @@ jobs:
           git rev-parse HEAD
 
       - name: Install pinned Stellar CLI
-        uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd
+        uses: stellar/stellar-cli@f2a7b74175c34585f3b30a1abf42a2d41cbcc390
         with:
           version: 28.1.0
 
