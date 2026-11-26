@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/starboytiimz/procuresettle/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)
+![Rust Edition](https://img.shields.io/badge/Rust%20Edition-2021-orange.svg)
 
 Accepted-quantity procurement settlement on Stellar.
 
