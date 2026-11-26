@@ -6,7 +6,7 @@
 - **Latest hosted Actions run:** [42155230066](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066)
 - **Verify job:** [127687683885](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683885)
 - **Flagship proof job:** [127687683545](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683545)
-- **Hosted proof artifact:** `procuresettle-hosted-flagship-proof`, artifact ID `13474451394`; [download ZIP](https://api.github.com/repos/starboytiimz/procuresettle/actions/artifacts/13474451394/zip). It expires December 6, 2026.
+- **Hosted proof artifact:** `procuresettle-hosted-flagship-proof`, artifact ID `13474451394`; [download from the workflow run](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066#artifacts). It expires December 6, 2026.
 
 The earlier successful run [42148702120](https://github.com/starboytiimz/procuresettle/actions/runs/42148702120) tested revision [`25726ae01f2e53e56cd94f43521db414992fa18b`](https://github.com/starboytiimz/procuresettle/commit/25726ae01f2e53e56cd94f43521db414992fa18b). No contract files changed between `25726ae` and `ebeefae`; the newer run is the latest hosted proof record, while the earlier run remains valid evidence for its tested revision. Both are project-controlled hosted executions, not independent external reproduction or review.
 

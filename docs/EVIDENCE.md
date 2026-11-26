@@ -149,7 +149,7 @@ tested source revision
 The [`verify` job](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683885)
 and [`flagship` job](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066/job/127687683545)
 both passed. Its `procuresettle-hosted-flagship-proof` artifact is ID
-`13474451394`, available as a [download ZIP](https://api.github.com/repos/starboytiimz/procuresettle/actions/artifacts/13474451394/zip)
+`13474451394`, available as a [download from the workflow run](https://github.com/starboytiimz/procuresettle/actions/runs/42155230066#artifacts)
 through December 6, 2026. Both proof summaries identify `ebeefae` as the
 tested source revision. The contract files are unchanged between this revision
 and `25726ae`; this is the newest project-controlled hosted execution, not an

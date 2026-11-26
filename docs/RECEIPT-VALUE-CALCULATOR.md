@@ -33,7 +33,7 @@ python3 scripts/calc-receipt-value.py \
 
 ### PO file
 
-The PO file uses the [`LineInput` array](schemas/line-input.schema.json) from
+The PO file uses the [`LineInput` array](../schemas/line-input.schema.json) from
 `create_po`, or an object with a `lines` array such as the JSON printed by
 `scripts/inspect-po.py`. Each line requires:
 
@@ -63,7 +63,7 @@ accepted yet.
 ### Receipt file
 
 The receipt file uses the
-[`ReceiptQuantityInput` shape](schemas/receipt-input.schema.json): an object
+[`ReceiptQuantityInput` shape](../schemas/receipt-input.schema.json): an object
 with a `quantities` array, optionally with `receipt_id` and `po_id`. Each entry
 requires `line_id` (matching a PO line) and `quantity_delta` (positive integer).
 An array of quantity objects is also accepted.

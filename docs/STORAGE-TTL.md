@@ -56,7 +56,7 @@ Network TTL limits are configuration parameters and can change. The values
 above were checked against the Stellar documentation on
 [State Archival](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival),
 the resource-limits reference linked there, and
-[CAP-46 State Archival Interface](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md)
+[CAP-46 State Archival Interface](https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md)
 on 2026-11-19. Re-check them before relying on the day equivalents; the
 [Stellar Lab network limits](https://lab.stellar.org/network-limits) or the
 network settings tooling report live values.
@@ -231,5 +231,5 @@ stellar contract build --locked --package procuresettle
 
 - [State Archival — Stellar Developer Docs](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival)
 - [Storage strategies — bump on access](https://developers.stellar.org/docs/build/guides/storage/storage-strategies)
-- [CAP-46 State Archival Interface](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md)
+- [CAP-46 State Archival Interface](https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md)
 - [Stellar Lab network limits](https://lab.stellar.org/network-limits)
