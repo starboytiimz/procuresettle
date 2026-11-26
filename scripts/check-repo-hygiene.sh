@@ -37,10 +37,27 @@ fail() {
 }
 
 # Editor/IDE/devcontainer configs are blocked, except inert extension recommendations.
-hits="$(grep -E '(^|/)\.(vscode|cursor|idea|devcontainer)/' <<<"$tracked" | grep -vE '^\.vscode/extensions\.json$' || true)"
+hits="$(grep -E '(^|/)\.(vscode|cursor|idea|devcontainer)/' <<<"$tracked" | grep -Fxv -e '.vscode/extensions.json' -e '.vscode/settings.json' || true)"
 if [ -n "$hits" ]; then
     fail "editor or devcontainer config must not be committed:"
     sed 's/^/  /' <<<"$hits"
+fi
+
+# Permit only the reviewed Soroban settings at this exact path.
+if grep -Fxq '.vscode/settings.json' <<<"$tracked"; then
+    if [[ ( -z "$REF" && -L .vscode/settings.json ) ]] || ! cmp -s <(read_file .vscode/settings.json | sed 's/\r$//') - <<'EOF'
+{
+  "rust-analyzer.cargo.target": "wasm32v1-none",
+  "rust-analyzer.check.command": "clippy",
+  "[rust]": {
+    "editor.formatOnSave": true
+  }
+}
+EOF
+    then
+        fail "VS Code settings must match the reviewed Soroban configuration:"
+        echo '  .vscode/settings.json'
+    fi
 fi
 
 # Fonts and native binaries have no place in this repo and are a common

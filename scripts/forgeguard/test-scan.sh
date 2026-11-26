@@ -63,6 +63,22 @@ EOF
 case_ "vscode extension recommendations" 0 <<'EOF'
 mkdir -p .vscode && printf '{"recommendations":["rust-lang.rust-analyzer"]}\n' >.vscode/extensions.json
 EOF
+case_ "reviewed Soroban VS Code settings" 0 <<'EOF'
+mkdir -p .vscode
+cat >.vscode/settings.json <<'JSON'
+{
+  "rust-analyzer.cargo.target": "wasm32v1-none",
+  "rust-analyzer.check.command": "clippy",
+  "[rust]": {
+    "editor.formatOnSave": true
+  }
+}
+JSON
+EOF
+case_ "unreviewed VS Code settings" 2 <<'EOF'
+mkdir -p .vscode
+printf '{"rust-analyzer.check.command":"check"}\n' >.vscode/settings.json
+EOF
 case_ "vscode auto-run task" 2 <<'EOF'
 mkdir -p .vscode && printf '{"tasks":[{"runOn":"folderOpen"}]}\n' >.vscode/tasks.json
 EOF

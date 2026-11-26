@@ -13,7 +13,7 @@ ForgeGuard scans open pull requests for supply-chain malware patterns (such as P
 
 **BLOCK** — malware patterns. Status `ForgeGuard / malware-scan` fails:
 - Anything `scripts/check-repo-hygiene.sh` rejects over the whole head tree:
-  - Editor/IDE and devcontainer configs (`.vscode/`, `.cursor/`, `.idea/`, `.devcontainer/`), except `.vscode/extensions.json` recommendations;
+  - Editor/IDE and devcontainer configs (`.vscode/`, `.cursor/`, `.idea/`, `.devcontainer/`), except `.vscode/extensions.json` recommendations and the exact reviewed Soroban configuration at `.vscode/settings.json`;
   - Disguised fonts or native binaries (`.woff2`, `.eot`, `.exe`, `.bat`, etc.);
   - npm lifecycle scripts (`preinstall`, `install`, `postinstall`, etc.);
   - Auto-run task settings (`allowAutomaticTasks`, `folderOpen`).
@@ -45,6 +45,6 @@ bash scripts/check-repo-hygiene.sh
 # Scan a branch against main
 bash scripts/forgeguard/scan-pr.sh main my-branch
 
-# Run scanner regression tests (24 tests)
+# Run scanner regression tests
 bash scripts/forgeguard/test-scan.sh
 ```
