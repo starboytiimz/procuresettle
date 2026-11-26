@@ -35,20 +35,45 @@ jobs:
       - name: Check repository hygiene
         run: bash scripts/check-repo-hygiene.sh
 
-      - name: Install pinned Rust and WASM target
+      - name: Read Rust channel and targets from rust-toolchain.toml
+        id: rust
         run: |
-          rustup toolchain install 1.95.0 --profile minimal --component rustfmt --component clippy
-          rustup target add --toolchain 1.95.0 wasm32v1-none
-          rustc +1.95.0 --version
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import re
+          import tomllib
+
+          with open("rust-toolchain.toml", "rb") as file:
+              toolchain = tomllib.load(file)["toolchain"]
+          channel = toolchain["channel"]
+          if not re.fullmatch(r"\d+\.\d+\.\d+", channel):
+              raise SystemExit("rust-toolchain.toml must pin an exact Rust release")
+          print(f"channel={channel}")
+          print("targets=" + ",".join(toolchain["targets"]))
+          PY
+
+      - name: Install repository Rust toolchain
+        uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
+        with:
+          toolchain: ${{ steps.rust.outputs.channel }}
+          targets: ${{ steps.rust.outputs.targets }}
+          components: rustfmt, clippy
+
+      - name: Verify active Rust version
+        env:
+          EXPECTED_RUST: ${{ steps.rust.outputs.channel }}
+        run: |
+          release=$(rustc --version --verbose | sed -n 's/^release: //p')
+          echo "Active Rust release: $release (expected $EXPECTED_RUST)"
+          test "$release" = "$EXPECTED_RUST"
 
       - name: Install pinned cargo-deny
-        run: cargo +1.95.0 install cargo-deny --locked --version 0.22.1
+        run: cargo install cargo-deny --locked --version 0.22.1
 
       - name: Check dependency licenses
-        run: cargo +1.95.0 deny check licenses
+        run: cargo deny check licenses
 
       - name: Check formatting
-        run: cargo +1.95.0 --locked fmt --all -- --check
+        run: cargo --locked fmt --all -- --check
 
       - name: Build Rust documentation
         env:
@@ -59,7 +84,7 @@ jobs:
         run: bash scripts/check-formatting.sh
 
       - name: Test workspace
-        run: cargo +1.95.0 test --workspace --locked
+        run: cargo test --workspace --locked
 
       - name: Ensure test snapshots are unchanged
         run: git diff --exit-code contracts/po-settlement/test_snapshots/
@@ -136,12 +161,36 @@ jobs:
           echo "QUICKSTART_IMAGE_DIGEST=sha256:4f8dfd693deba57fddef7f0bc722e4782c2e606c8675e3adc5438cebae249295" >> "$GITHUB_ENV"
           echo "QUICKSTART_IMAGE_TAG=procuresettle-proof-4f8dfd693deb" >> "$GITHUB_ENV"
 
-      - name: Install pinned Rust and WASM target
+      - name: Read Rust channel and targets from rust-toolchain.toml
+        id: rust
         run: |
-          rustup toolchain install 1.95.0 --profile minimal
-          rustup target add --toolchain 1.95.0 wasm32v1-none
-          rustc +1.95.0 --version
-          cargo +1.95.0 --version
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import re
+          import tomllib
+
+          with open("rust-toolchain.toml", "rb") as file:
+              toolchain = tomllib.load(file)["toolchain"]
+          channel = toolchain["channel"]
+          if not re.fullmatch(r"\d+\.\d+\.\d+", channel):
+              raise SystemExit("rust-toolchain.toml must pin an exact Rust release")
+          print(f"channel={channel}")
+          print("targets=" + ",".join(toolchain["targets"]))
+          PY
+
+      - name: Install repository Rust toolchain
+        uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
+        with:
+          toolchain: ${{ steps.rust.outputs.channel }}
+          targets: ${{ steps.rust.outputs.targets }}
+
+      - name: Verify active Rust version
+        env:
+          EXPECTED_RUST: ${{ steps.rust.outputs.channel }}
+        run: |
+          release=$(rustc --version --verbose | sed -n 's/^release: //p')
+          echo "Active Rust release: $release (expected $EXPECTED_RUST)"
+          test "$release" = "$EXPECTED_RUST"
+          cargo --version
           python3 --version
           git rev-parse HEAD
 
