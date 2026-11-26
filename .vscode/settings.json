@@ -1,0 +1,7 @@
+{
+  "rust-analyzer.cargo.target": "wasm32v1-none",
+  "rust-analyzer.check.command": "clippy",
+  "[rust]": {
+    "editor.formatOnSave": true
+  }
+}
