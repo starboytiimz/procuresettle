@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 15
     steps:
       # v4.4.0; immutable release commit.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           # Test the PR head itself rather than GitHub's synthetic merge ref.
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -140,7 +140,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout exact PR head revision
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
